@@ -1,0 +1,39 @@
+WpMainNomal参数说明：
+参数1：properties配置文件,此文件需要存放在conf文件夹下，传入文件名即可
+参数2：需要解析的文件路径
+参数3：输出文件的路径
+
+WpMain程序修改如下：
+2015年8月22日
+修改WpParse类，增加了区分QCI的解析
+需要配置wpcfg.properties
+如下
+##配置要区分qci的参数分类
+##QCI为前缀，其中数字02代表厂家编码,EnbFunction代表基站级别，EutranCellTdd代表小区级别
+##多个参数分类用逗号隔开
+##对应到表中t_lte_wp_dic_factory中字段wpm_obj_name的配置为原参数名后跟QCI
+##如ULMINGBR则对应ULMINGBR_QCI1,ULMINGBR_QCI2
+QCI_EnbFunction_02=STANDARDQCI
+
+在程序中修改了merge方法，取得QCI中的参数，取得数值中的数字然后拼接到参数名后边，形成新的参数名，以此来区分不同的QCI
+
+
+20151217修改
+增加多值参数配置
+##多值分组参数配置
+##很多情况下一个小区的一组参数是根据某个具体参数的值进行不同的分组的，也就是说，一个小区的某些参数是对应多个值的
+##和QCI参数类似,所以增加如下配置来区分参数取值
+##配置说明mulitiple为多值配置前缀，EnbFunction代表基站级别，EutranCellTdd代表小区级别 02代表厂家编码
+##等号后边为具体需要区分多值的参数类型以及区分的标志参数,如果存在多个参数类型需要区分，可以逗号分割，和QCI配置相同
+multiple_EutranCellTdd_02=INTERRATHOCOMMGROUP_InterRatHoCommGroupId
+
+20170112修改，应对一个omc不同小区同一个参数可能存在多个采集点的问题
+-- Add/modify columns 
+alter table T_LTE_WP_DIC_FACTORY add wpm_other_objs varchar2(500);
+-- Add comments to the columns 
+comment on column T_LTE_WP_DIC_FACTORY.wpm_obj_name
+  is '';
+comment on column T_LTE_WP_DIC_FACTORY.wpm_other_objs
+  is '从其他参数采集,数据内容：参数类别-参数名称,如果多个其他参数，则用逗号隔开。';
+
+

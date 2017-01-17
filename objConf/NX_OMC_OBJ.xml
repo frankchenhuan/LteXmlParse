@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 此XML用于诺西厂家的配置文件的解析与入库-->
+<Objects>
+	<Object>
+		<ObjectType>EnbFunction</ObjectType>
+		<tablename>T_LTE_CM_ENBFUNCTION_D</tablename>
+		<FieldName>
+			<N type="string" flag="0" tablecolumn="ID" length="50">Id</N>
+			<N type="string" flag="0" tablecolumn="USERLABEL" length="40" replace="all-char">Dn-EnbFunction</N>
+			<N type="string" flag="0" tablecolumn="ADMINISTRATIVESTATE" length="40">AdministrativeState</N>
+			<N type="string" flag="0" tablecolumn="OPERATIONALSTATE" length="50">OperationalState</N>
+			<N type="string" flag="0" tablecolumn="ENBID" length="40">EnbId</N>
+			<N type="string" flag="0" tablecolumn="X2IPADDRESSLIST" length="40">X2IpAddressList</N>
+			<N type="string" flag="0" tablecolumn="X2BLACKLIST" length="40">X2BlackList</N>
+			<N type="string" flag="0" tablecolumn="X2WHITELIST" length="40">X2WhiteList</N>
+			<N type="string" flag="0" tablecolumn="X2HOBLACKLIST" length="40">X2HoBlackList</N>
+			<N type="string" flag="1" tablecolumn="DATE_TIME" length="40">DateTime</N>
+			<N type="date" flag="1" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" flag="1" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" flag="1" tablecolumn="i_omc_id" length="10">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此对象用于LTE小区明细信息-->
+	<Object>
+		<ObjectType>EutranCellTdd</ObjectType>
+		<tablename>T_LTE_CM_EUTRANCELLTDD_D</tablename>
+		<FieldName>
+			<N type="string" tablecolumn="ID" length="50">Id</N>
+			<N type="string" tablecolumn="USERLABEL" length="50">UserLabel</N>
+			<N type="string" tablecolumn="ADMINISTRATIVESTATE" length="50">AdministrativeState</N>
+			<N type="string" tablecolumn="OPERATIONALSTATE" length="50">OperationalState</N>
+			<N type="number" tablecolumn="CELLLOCALID">CellLocalId</N>
+			<N type="string" tablecolumn="CELLSIZE" length="50">CellSize</N>
+			<N type="string" tablecolumn="PLMNIDLIST" length="100">PlmnIdList</N>
+			<N type="number" tablecolumn="TAC">Tac</N>
+			<N type="number" tablecolumn="PCI">Pci</N>
+			<N type="string" tablecolumn="PCILIST" length="50">PciList</N>
+			<N type="number" tablecolumn="MAXIMUMTRANSMISSIONPOWER" length="50">MaximumTransmissionPower</N>
+			<N type="int" tablecolumn="REFERENCESIGNALPOWER">ReferenceSignalPower</N>
+			<N type="int" tablecolumn="PB">Pb</N>
+			<N type="string" tablecolumn="RELATEDRRULIST" length="500">RelatedRruList</N>
+			<N type="string" tablecolumn="RELATEDANTENNALIST" length="1000">RelatedAntennaList</N>
+			<N type="int" tablecolumn="BANDINDICATOR">BandIndicator</N>
+			<N type="int" tablecolumn="EARFCN">Earfcn</N>
+			<N type="int" tablecolumn="BANDWIDTH">BandWidth</N>
+			<N type="int" tablecolumn="SFASSIGNMENT">SfAssignment</N>
+			<N type="int" tablecolumn="SPECIALSFPATTERNS">SpecialSfPatterns</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="i_omc_id" length="10">i_omc_id</N>
+			<N type="number" tablecolumn="ENBID" length="10" regex="[^0-9]">Dn-EnbFunction</N>
+		</FieldName>
+	</Object>
+</Objects>

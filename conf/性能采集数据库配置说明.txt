@@ -1,0 +1,20 @@
+配置表分为四个表
+1.object_table 对象表，表示要解析的对象以及对应的数据表，其中字段CONFIGNAME为配置名称
+	在pmcfg配置文件中当confType=db时，需要为omc配置此对象名称，表示此omc需要解析哪些对象。
+	程序初始会根据配置的名称查询数据表object_table的数据记录。
+	其中字段SUB_TABLENAME用于保存分项指标的表名
+	TARGETNAMEFIELD开头的表示存储含有分项指标名称的字段
+	SUBTARGETNAMEFIELD开头的字段表示存储分项指标名称的字段
+	TARGETVALUEFIELD开头的字段表示存储分项指标值的字段
+	
+	SUB_TABLENAME 如果此字段为空则表示没有字表，不需要采集分项指标，如果不为空则其余相关字段也必须有配置信息。
+	
+2.field_table字段表，即需要解析的对象的字段、属性对应关系以及类型等信息。
+
+3.subtable_field 分项指标表(字表),其他字段的存储配置
+
+4.subtable_target 表示有哪些指标需要存储分项指标
+
+注：field_table、subtable_field、subtable_target表中的OBJECT_ID均指向object_table表的ID
+	,所以object_table不能为空且必须唯一。
+	 每个对象对应的表可在properties文件中制定，但表结构必须一致。

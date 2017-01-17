@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 此XML用于中兴厂家的配置文件的解析与入库-->
+<Objects>
+	<Object>
+		<ObjectType>AntennaFunction</ObjectType>
+		<ProCount>21</ProCount>
+		<Sql>INSERT INTO T_LTE_CM_ANTENNAFUNCTION_D(VERTBEAMWIDTH,USERLABEL,RETTILTVALUE,RETGROUPNAME,RETFLAG,OPERATIONALSTATE,MINTILTVALUE,MINAZIMUTHVALUE,MECHANICALOFFSET,MAXTILTVALUE,MAXAZIMUTHVALUE,LONGITUDE,LATITUDE,
+		ID,HORIZBEAMWIDTH,HEIGHT,BEARING,BASEELEVATION,ANTNUMBER,ANTEUTRANCELLLIST,ADMINISTRATIVESTATE,DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="int" flag="0">VertBeamwidth</N>
+			<N i="2" type="string" flag="0">UserLabel</N>
+			<N i="3" type="int" flag="0">RetTiltValue</N>
+			<N i="4" type="int" flag="0">RetGroupName</N>
+			<N i="5" type="string" flag="0">RetFlag</N>
+			<N i="6" type="string" flag="0">OperationalState</N>
+			<N i="7" type="int" flag="0">MinTiltValue</N>
+			<N i="8" type="string" flag="0">MinAzimuthValue</N>
+			<N i="9" type="int" flag="0">MechanicalOffset</N>
+			<N i="10" type="int" flag="0">MaxTiltValue</N>
+			<N i="11" type="int" flag="0">MaxAzimuthValue</N>
+			<N i="12" type="float" flag="0">Longitude</N>
+			<N i="13" type="float" flag="0">Latitude</N>
+			<N i="14" type="string" flag="0">Id</N>
+			<N i="15" type="int" flag="0">HorizBeamwidth</N>
+			<N i="16" type="int" flag="0">Height</N>
+			<N i="17" type="int" flag="0">Bearing</N>
+			<N i="18" type="int" flag="0">BaseElevation</N>
+			<N i="19" type="int" flag="0">AntNumber</N>
+			<N i="20" type="string" flag="0">AntEutranCellList</N>
+			<N i="21" type="string" flag="0">AdministrativeState</N>
+			<N i="22" type="string" flag="1">DateTime</N>
+			<N i="23" type="date" flag="1">dtm_repdate</N>
+			<N i="24" type="string" flag="1">i_factory_id</N>
+			<N i="25" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于EnbFunction文件的解析与入库-->
+	<!-- 此对象用于LTE基站配置信息-->
+	<Object>
+		<ObjectType>EnbFunction</ObjectType>
+		<ProCount>9</ProCount>
+		<Sql>INSERT INTO T_LTE_CM_ENBFUNCTION_D(X2WHITELIST,X2IPADDRESSLIST,X2HOBLACKLIST,X2BLACKLIST,USERLABEL,OPERATIONALSTATE,ID,ENBID,ADMINISTRATIVESTATE,
+		DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">X2WhiteList</N>
+			<N i="2" type="string" flag="0">X2IpAddressList</N>
+			<N i="3" type="string" flag="0">X2HoBlackList</N>
+			<N i="4" type="string" flag="0">X2BlackList</N>
+			<N i="5" type="string" flag="0">UserLabel</N>
+			<N i="6" type="string"  flag="0">OperationalState</N>
+			<N i="7" type="string" flag="0">Id</N>
+			<N i="8" type="string" flag="0">EnbId</N>
+			<N i="9" type="string" flag="0">AdministrativeState</N>
+			<N i="10" type="string" flag="1">DateTime</N>
+			<N i="11" type="date" flag="1">dtm_repdate</N>
+			<N i="12" type="string" flag="1">i_factory_id</N>
+			<N i="13" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于EpRpStaS1MmeEnb文件的解析与入库-->
+	<!-- 此对象用于EPC和E-UTRAN之间的接口界面信息-->
+	<Object>
+		<ObjectType>EpRpStaS1MmeEnb</ObjectType>
+		<ProCount>7</ProCount>
+		<Sql>INSERT INTO LTE_CM_EPRPSTAS1MMEENB(USERLABEL,OPERATIONALSTATE,LOCIPADDRLIST,ID,GLOBALUNIQUEMMEID,FARENDIPADDRLIST,ADMINISTRATIVESTATE,
+		DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">UserLabel</N>
+			<N i="2" type="string" flag="0">OperationalState</N>
+			<N i="3" type="string" flag="0">LocIpAddrList</N>
+			<N i="4" type="string" flag="0">Id</N>
+			<N i="5" type="string" flag="0">GlobalUniqueMmeId</N>
+			<N i="6" type="string" flag="0">FarEndIpAddrList</N>
+			<N i="7" type="string" flag="0">AdministrativeState</N>
+			<N i="8" type="string" flag="1">DateTime</N>
+			<N i="9" type="date" flag="1">dtm_repdate</N>
+			<N i="10" type="string" flag="1">i_factory_id</N>
+			<N i="11" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于EthernetPort文件的解析与入库-->
+	<!-- 此对象用于以太网端口信息-->
+	<Object>
+		<ObjectType>EthernetPort</ObjectType>
+		<ProCount>10</ProCount>
+		<Sql>INSERT INTO LTE_CM_ETHERNETPORT(USERLABEL,SIGNTRANSMEDIA,PORTRATE,PORTLOCATION,OPERATIONALSTATE,MACADDRESS,IPADDRESSLIST,ID,FARPORTLOCATION,ADMINISTRATIVESTATE,
+		DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">UserLabel</N>
+			<N i="2" type="string" flag="0">SignTransMedia</N>
+			<N i="3" type="string" flag="0">PortRate</N>
+			<N i="4" type="string" flag="0">PortLocation</N>
+			<N i="5" type="string" flag="0">OperationalState</N>
+			<N i="6" type="string" flag="0">MacAddress</N>
+			<N i="7" type="string" flag="0">IpAddressList</N>
+			<N i="8" type="string" flag="0">Id</N>
+			<N i="9" type="string" flag="0">FarPortLocation</N>
+			<N i="10" type="string" flag="0">AdministrativeState</N>
+			<N i="11" type="string" flag="1">DateTime</N>
+			<N i="12" type="date" flag="1">dtm_repdate</N>
+			<N i="13" type="string" flag="1">i_factory_id</N>
+			<N i="14" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+<!-- 此XML用于EutranCellTdd文件的解析与入库-->
+<!-- 此对象用于LTE小区明细信息-->
+	<Object>
+		<ObjectType>EutranCellTdd</ObjectType>
+		<ProCount>21</ProCount>
+		<Sql>INSERT INTO T_LTE_CM_EUTRANCELLTDD_D(USERLABEL,TAC,SPECIALSFPATTERNS,SFASSIGNMENT,RELATEDRRULIST,
+		RELATEDANTENNALIST,REFERENCESIGNALPOWER,PLMNIDLIST,PCILIST,PCI,PB,OPERATIONALSTATE,MAXIMUMTRANSMISSIONPOWER,ID,EARFCN,CELLSIZE,CELLRESVINFO,CELLLOCALID,
+		BANDWIDTH,BANDINDICATOR,ADMINISTRATIVESTATE,DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">UserLabel</N>
+			<N i="2" type="int" flag="0">Tac</N>
+			<N i="3" type="int" flag="0">SpecialSfPatterns</N>
+			<N i="4" type="int" flag="0">SfAssignment</N>
+			<N i="5" type="string" flag="0">RelatedRruList</N>
+			<N i="6" type="string" flag="0">RelatedAntennaList</N>
+			<N i="7" type="int" flag="0">ReferenceSignalPower</N>
+			<N i="8" type="string" flag="0">PlmnIdList</N>
+			<N i="9" type="string" flag="0">PciList</N>
+			<N i="10" type="int" flag="0">Pci</N>
+			<N i="11" type="int" flag="0">Pb</N>
+			<N i="12" type="string" flag="0">OperationalState</N>
+			<N i="13" type="string" flag="0">MaximumTransmissionPower</N>
+			<N i="14" type="string" flag="0">Id</N>
+			<N i="15" type="int" flag="0">Earfcn</N>
+			<N i="16" type="string" flag="0">CellSize</N>
+			<N i="17" type="string" flag="0">CellResvInfo</N>
+			<N i="18" type="int" flag="0">CellLocalId</N>
+			<N i="19" type="int" flag="0">BandWidth</N>
+			<N i="20" type="int" flag="0">BandIndicator</N>
+			<N i="21" type="string" flag="0">AdministrativeState</N>
+			<N i="22" type="string" flag="1">DateTime</N>
+			<N i="23" type="date" flag="1">dtm_repdate</N>
+			<N i="24" type="string" flag="1">i_factory_id</N>
+			<N i="25" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于EutranRelationTdd文件的解析与入库-->
+	<!-- 此对象用于LTE邻区关系明细信息-->
+	<Object>
+		<ObjectType>EutranRelationTdd</ObjectType>
+		<ProCount>10</ProCount>
+		<Sql>INSERT INTO LTE_CM_EUTRANRELATIONTDD(USERLABEL,TCI,PLMNIDLIST,PCI,ISREMOVEALLOWED,ISLBALLOWED,ISICICINFORMATIONSENDALLOWED,ISHOALLOWED,ID,EARFCN,
+		DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">UserLabel</N>
+			<N i="2" type="string" flag="0">Tci</N>
+			<N i="3" type="string" flag="0">PlmnIdList</N>
+			<N i="4" type="int" flag="0">Pci</N>
+			<N i="5" type="string" flag="0">IsRemoveAllowed</N>
+			<N i="6" type="string" flag="0">IsLbAllowed</N>
+			<N i="7" type="string" flag="0">IsIcicInformationSendAllowed</N>
+			<N i="8" type="string" flag="0">IsHoAllowed</N>
+			<N i="9" type="string" flag="0">Id</N>
+			<N i="10" type="int" flag="0">Earfcn</N>
+			<N i="11" type="string" flag="1">DateTime</N>
+			<N i="12" type="date" flag="1">dtm_repdate</N>
+			<N i="13" type="string" flag="1">i_factory_id</N>
+			<N i="14" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于InventoryUnitPack文件的解析与入库-->
+	<!-- 此对象用于InventoryUnitPack明细信息-->
+	<Object>
+		<ObjectType>InventoryUnitPack</ObjectType>
+		<ProCount>13</ProCount>
+		<Sql>INSERT INTO LTE_CM_INVENTORYUNITPACK(VERSIONNUMBER,VENDORUNITTYPENUMBER,VENDORUNITFAMILYTYPE,VENDORNAME,USERLABEL,SLOTSOCCUPIED,SERIALNUMBER,PORTSINFORMATION,PACKPOSITION,MANUFACTURERDATA,
+		ID,DATEOFMANUFACTURE,DATEOFLASTSERVICE,DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">VersionNumber</N>
+			<N i="2" type="string" flag="0">VendorUnitTypeNumber</N>
+			<N i="3" type="string" flag="0">VendorUnitFamilyType</N>
+			<N i="4" type="string" flag="0">VendorName</N>
+			<N i="5" type="string" flag="0">UserLabel</N>
+			<N i="6" type="string" flag="0">SlotsOccupied</N>
+			<N i="7" type="string" flag="0">SerialNumber</N>
+			<N i="8" type="string" flag="0">PortsInformation</N>
+			<N i="9" type="string" flag="0">PackPosition</N>
+			<N i="10" type="string" flag="0">ManufacturerData</N>
+			<N i="11" type="string" flag="0">Id</N>
+			<N i="12" type="date" flag="0">DateOfManufacture</N>
+			<N i="13" type="date" flag="0">DateOfLastService</N>
+			<N i="14" type="string" flag="1">DateTime</N>
+			<N i="15" type="date" flag="1">dtm_repdate</N>
+			<N i="16" type="string" flag="1">i_factory_id</N>
+			<N i="17" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于InventoryUnitRack文件的解析与入库-->
+	<!-- 此对象用于InventoryUnitRack明细信息-->
+	<Object>
+		<ObjectType>InventoryUnitRack</ObjectType>
+		<ProCount>11</ProCount>
+		<Sql>INSERT INTO LTE_CM_INVENTORYUNITRACK(VERSIONNUMBER,VENDORUNITTYPENUMBER,VENDORUNITFAMILYTYPE,VENDORNAME,USERLABEL,SERIALNUMBER,RACKPOSITION,MANUFACTURERDATA,
+		ID,DATEOFMANUFACTURE,DATEOFLASTSERVICE,DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">VersionNumber</N>
+			<N i="2" type="string" flag="0">VendorUnitTypeNumber</N>
+			<N i="3" type="string" flag="0">VendorUnitFamilyType</N>
+			<N i="4" type="string" flag="0">VendorName</N>
+			<N i="5" type="string" flag="0">UserLabel</N>
+			<N i="6" type="string" flag="0">SerialNumber</N>
+			<N i="7" type="string" flag="0">RackPosition</N>
+			<N i="8" type="string" flag="0">ManufacturerData</N>
+			<N i="9" type="string" flag="0">Id</N>
+			<N i="10" type="date" flag="0">DateOfManufacture</N>
+			<N i="11" type="date" flag="0">DateOfLastService</N>
+			<N i="12" type="string" flag="1">DateTime</N>
+			<N i="13" type="date" flag="1">dtm_repdate</N>
+			<N i="14" type="string" flag="1">i_factory_id</N>
+			<N i="15" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于InventoryUnitRru文件的解析与入库-->
+	<!-- 此对象用于射频拉远单元明细信息-->
+	<Object>
+		<ObjectType>InventoryUnitRru</ObjectType>
+		<ProCount>11</ProCount>
+		<Sql>INSERT INTO LTE_CM_INVENTORYUNITRRU(VERSIONNUMBER,VENDORUNITTYPENUMBER,VENDORUNITFAMILYTYPE,VENDORNAME,USERLABEL,SERIALNUMBER,MANUFACTURERDATA,ID,FREQUENCYBAND,DATEOFMANUFACTURE,DATEOFLASTSERVICE,
+		DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">VersionNumber</N>
+			<N i="2" type="string" flag="0">VendorUnitTypeNumber</N>
+			<N i="3" type="string" flag="0">VendorUnitFamilyType</N>
+			<N i="4" type="string" flag="0">VendorName</N>
+			<N i="5" type="string" flag="0">UserLabel</N>
+			<N i="6" type="string" flag="0">SerialNumber</N>
+			<N i="7" type="string" flag="0">ManufacturerData</N>
+			<N i="8" type="string" flag="0">Id</N>
+			<N i="9" type="string" flag="0">FrequencyBand</N>
+			<N i="10" type="date" flag="0">DateOfManufacture</N>
+			<N i="11" type="date" flag="0">DateOfLastService</N>
+			<N i="12" type="string" flag="1">DateTime</N>
+			<N i="13" type="date" flag="1">dtm_repdate</N>
+			<N i="14" type="string" flag="1">i_factory_id</N>
+			<N i="15" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于InventoryUnitShelf文件的解析与入库-->
+	<!-- 此对象用于InventoryUnitShelf信息-->
+	<Object>
+		<ObjectType>InventoryUnitShelf</ObjectType>
+		<ProCount>12</ProCount>
+		<Sql>INSERT INTO LTE_CM_INVENTORYUNITSHELF(VERSIONNUMBER,VENDORUNITTYPENUMBER,VENDORUNITFAMILYTYPE,VENDORNAME,USERLABEL,SLOTSINFORMATION,SHELFPOSITION,SERIALNUMBER,MANUFACTURERDATA,
+		ID,DATEOFMANUFACTURE,DATEOFLASTSERVICE,DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">VersionNumber</N>
+			<N i="2" type="string" flag="0">VendorUnitTypeNumber</N>
+			<N i="3" type="string" flag="0">VendorUnitFamilyType</N>
+			<N i="4" type="string" flag="0">VendorName</N>
+			<N i="5" type="string" flag="0">UserLabel</N>
+			<N i="6" type="string" flag="0">SlotsInformation</N>
+			<N i="7" type="string" flag="0">ShelfPosition</N>
+			<N i="8" type="string" flag="0">SerialNumber</N>
+			<N i="9" type="string" flag="0">ManufacturerData</N>
+			<N i="10" type="string" flag="0">Id</N>
+			<N i="11" type="date" flag="0">DateOfManufacture</N>
+			<N i="12" type="date" flag="0">DateOfLastService</N>
+			<N i="13" type="string" flag="1">DateTime</N>
+			<N i="14" type="date" flag="1">dtm_repdate</N>
+			<N i="15" type="string" flag="1">i_factory_id</N>
+			<N i="16" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于ManagedElement文件的解析与入库-->
+	<!-- 此对象用于节点管理信息-->	
+	<Object>
+		<ObjectType>ManagedElement</ObjectType>
+		<ProCount>14</ProCount>
+		<Sql>INSERT INTO LTE_CM_MANAGEDELEMENT(VERSION,VENDORNAME,USERLABEL,USERDEFINEDSTATE,SWVERSION,PATCHINFO,OPERATIONALSTATE,MANAGEMENTIPADRESS,MANAGEDBY,
+		LOCATIONNAME,ID,HARDWAREPLATFORM,DNPREFIX,ADMINISTRATIVESTATE,DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">Version</N>
+			<N i="2" type="string" flag="0">VendorName</N>
+			<N i="3" type="string" flag="0">UserLabel</N>
+			<N i="4" type="string" flag="0">UserDefinedState</N>
+			<N i="5" type="string" flag="0">SwVersion</N>
+			<N i="6" type="string" flag="0">PatchInfo</N>
+			<N i="7" type="string" flag="0">OperationalState</N>
+			<N i="8" type="string" flag="0">ManagementIpAdress</N>
+			<N i="9" type="string" flag="0">ManagedBy</N>
+			<N i="10" type="string" flag="0">LocationName</N>
+			<N i="11" type="string" flag="0">Id</N>
+			<N i="12" type="string" flag="0">HardwarePlatform</N>
+			<N i="13" type="string" flag="0">DnPrefix</N>
+			<N i="14" type="string" flag="0">AdministrativeState</N>
+			<N i="15" type="string" flag="1">DateTime</N>
+			<N i="16" type="date" flag="1">dtm_repdate</N>
+			<N i="17" type="string" flag="1">i_factory_id</N>
+			<N i="18" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于SctpAssoc文件的解析与入库-->
+	<!-- 此对象用于SCTP偶联信息-->
+	<Object>
+		<ObjectType>SctpAssoc</ObjectType>
+		<ProCount>6</ProCount>
+		<Sql>INSERT INTO LTE_CM_SCTPASSOC(USERLABEL,SCTPASSOCREMOTEADDR,SCTPASSOCLOCALADDR,OPERATIONALSTATE,ID,ADMINISTRATIVESTATE,
+		DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">UserLabel</N>
+			<N i="2" type="string" flag="0">SctpAssocRemoteAddr</N>
+			<N i="3" type="string" flag="0">SctpAssocLocalAddr</N>
+			<N i="4" type="string" flag="0">OperationalState</N>
+			<N i="5" type="string" flag="0">Id</N>
+			<N i="6" type="string" flag="0">AdministrativeState</N>
+			<N i="7" type="string" flag="1">DateTime</N>
+			<N i="8" type="date" flag="1">dtm_repdate</N>
+			<N i="9" type="string" flag="1">i_factory_id</N>
+			<N i="10" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于GsmRelation文件的解析与入库-->
+	<!-- 此对象用于gsm邻区关系-->
+	<Object>
+		<ObjectType>GsmRelation</ObjectType>
+		<ProCount>7</ProCount>
+		<Sql>INSERT INTO LTE_CM_GSMRELATION(USERLABEL,RAC,NCC,ID,BCCHFREQUENCY,BCC,ADJACENTCELLID,
+		DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">UserLabel</N>
+			<N i="2" type="int" flag="0">Rac</N>
+			<N i="3" type="int" flag="0">Ncc</N>
+			<N i="4" type="string" flag="0">Id</N>
+			<N i="5" type="int" flag="0">BcchFrequency</N>
+			<N i="6" type="int" flag="0">Bcc</N>
+			<N i="7" type="string" flag="0">AdjacentCellId</N>
+			<N i="8" type="string" flag="1">DateTime</N>
+			<N i="9" type="date" flag="1">dtm_repdate</N>
+			<N i="10" type="string" flag="1">i_factory_id</N>
+			<N i="11" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+	<Object>
+		<ObjectType>EpRpDynS1uEnb</ObjectType>
+		<ProCount>4</ProCount>
+		<Sql>INSERT INTO LTE_CM_EPRPDYNS1UENB(USERLABEL,LOCIPADDRLIST,ID,FARIPSUBNETWORKLIST,
+		DATE_TIME,DTM_REPDATE,I_FACTORY_ID,I_OMC_ID) VALUES(?,?,?,?,?,?,?,?)</Sql>
+		<FieldName>
+			<N i="1" type="string" flag="0">UserLabel</N>
+			<N i="2" type="string" flag="0">LocIpAddrList</N>
+			<N i="3" type="string" flag="0">Id</N>
+			<N i="4" type="string" flag="0">FarIpSubnetworkList</N>
+			<N i="5" type="string" flag="1">DateTime</N>
+			<N i="6" type="date" flag="1">dtm_repdate</N>
+			<N i="7" type="string" flag="1">i_factory_id</N>
+			<N i="8" type="string" flag="1">i_omc_id</N>
+		</FieldName>
+	</Object>
+</Objects>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 此XML用于诺西厂家的配置文件的解析与入库-->
+<Objects>
+	<!-- 此XML用于AntennaFunction文件的解析与入库-->
+	<!-- 此对象用于LTE天线配置信息-->
+	<Object>
+		<ObjectType>EutranCellTdd</ObjectType>
+		<tablename>PM_EUTRANCELLTDD</tablename>
+		<temp_tablename>PM_EUTRANCELLTDD_B</temp_tablename>
+		<FieldName>
+			<N type="number" tablecolumn="P0001">IRATHO.SuccOutUtran</N>
+			<N type="number" tablecolumn="P0003">CONTEXT.AttInitalSetup.Csfb</N>
+			<N type="number" tablecolumn="P0004">IRATHO.SuccPrepOutGeran</N>
+			<N type="number" tablecolumn="P0005">IRATHO.FailPrepOutUtran</N>
+			<N type="number" tablecolumn="P0006">RRC.ConnReleaseCsfb</N>
+			<N type="number" tablecolumn="P0007">IRATHO.SuccPrepOutUtran</N>
+			<N type="number" tablecolumn="P0008">IRATHO.SuccOutGeran</N>
+			<N type="number" tablecolumn="P0009">IRATHO.AttOutUtran</N>
+			<N type="number" tablecolumn="P0010">IRATHO.AttOutGeran</N>
+			<N type="number" tablecolumn="P0011">CONTEXT.SuccInitalSetup.Csfb</N>
+			<N type="number" tablecolumn="P0012">PDCP.CpOctDl</N>
+			<N type="number" tablecolumn="P0013">MAC.NbrInitTbDl.16Qam</N>
+			<N type="number" tablecolumn="P0014">MAC.NbrInitTbUl.64Qam</N>
+			<N type="number" tablecolumn="P0015">ERAB.NbrAttMod</N>
+			<N type="number" tablecolumn="P0016">RRU.RachPreambleRcvd.Dedicated</N>
+			<N type="number" tablecolumn="P0017">ERAB.NbrMeanEstab</N>
+			<N type="number" tablecolumn="P0018">ERAB.EstabTimeMean</N>
+			<N type="number" tablecolumn="P0019">MAC.NbrResErrTbDl</N>
+			<N type="number" tablecolumn="P0020">ERAB.NbrFailMod</N>
+			<N type="number" tablecolumn="P0021">PDCP.UpPktDiscardRateDl</N>
+			<N type="number" tablecolumn="P0022">PDCP.UpPktDiscardDl</N>
+			<N type="number" tablecolumn="P0023">RRU.RachPreambleRcvd.GroupB</N>
+			<N type="number" tablecolumn="P0024">MAC.NbrInitTbDl.64Qam</N>
+			<N type="number" tablecolumn="P0025">MAC.NbrTbDl</N>
+			<N type="number" tablecolumn="P0026">RRC.ConnMax</N>
+			<N type="number" tablecolumn="P0027">PDCP.CpOctUl</N>
+			<N type="number" tablecolumn="P0028">ERAB.EstabTimeMax</N>
+			<N type="number" tablecolumn="P0029">ERAB.NbrSuccMod</N>
+			<N type="number" tablecolumn="P0030">MAC.NbrInitTbUl</N>
+			<N type="number" tablecolumn="P0031">MAC.NbrSuccInitTbUl.16Qam</N>
+			<N type="datetime" tablecolumn="DTM_REPDATE" format="yyyy-MM-dd hh:mm">dtm_repdate</N>
+			<N type="datetime" tablecolumn="BeginTime" format="yyyy-MM-dd hh:mm:ss">BeginTime</N>
+			<N type="datetime" tablecolumn="EndTime" format="yyyy-MM-dd hh:mm:ss">EndTime</N>
+			<N type="int" tablecolumn="EUTRANCELLTDD" regex="[^0-9]">Dn-EutranCellTdd</N>
+			<N type="int" tablecolumn="ENBID" regex="[^0-9]">Dn-EnbFunction</N>
+		</FieldName>
+		<!-- 有分项指标数据文件中的名称以及对应的数据库列，多个指标用逗号隔开 -->
+		<subTargets>
+			<target>IRATHO.FailPrepOutUtran._Cause</target>
+			<target>PDCP.UpPktDiscardRateDl._Qci</target>
+			<target>PDCP.UpOctDl._Qci</target>
+			<target>ERAB.NbrSuccMod._Qci</target>
+			<!-- 用于有分项的指标配置 -->
+			<subTable>
+				<!-- 存放分项指标的表 -->
+				<tablename>PM_EUTRANCELLTDD_SUB</tablename>
+				<temp_tablename>PM_EUTRANCELLTDD_SUB_B</temp_tablename>
+				<targetNameField type="string" length="100" tablecolumn="NAME"/>
+				<!-- 存放分项指标名的字段 -->
+				<subTargetNameField type="string" length="100" tablecolumn="SUBNAME"/>
+				<!-- 存放分项指标值的字段 -->
+				<targetValueField type="number" tablecolumn="VALUE"/>
+				<N type="datetime" tablecolumn="DTM_REPDATE" format="yyyy-MM-dd hh:mm">dtm_repdate</N>
+				<N type="datetime" tablecolumn="BeginTime" format="yyyy-MM-dd hh:mm:ss">BeginTime</N>
+				<N type="datetime" tablecolumn="EndTime" format="yyyy-MM-dd hh:mm:ss">EndTime</N>
+				<N type="int" tablecolumn="EUTRANCELLTDD" regex="[^0-9]">Dn-EutranCellTdd</N>
+				<N type="int" tablecolumn="ENBID" regex="[^0-9]">Dn-EnbFunction</N>
+			</subTable>
+		</subTargets>
+	</Object>
+</Objects>
