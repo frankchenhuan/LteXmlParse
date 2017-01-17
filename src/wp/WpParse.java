@@ -1137,7 +1137,7 @@ public class WpParse {
 			if (wpm_other_objs != null) {
 				String otherobjs[] = wpm_other_objs.split(",");
 				for (String obj : otherobjs) {
-					wtn.addOtherObj(obj);
+					wtn.addOtherObj(obj.toUpperCase());
 				}
 			}
 		}
@@ -1164,7 +1164,7 @@ public class WpParse {
 			if (wpm_other_objs != null) {
 				String otherobjs[] = wpm_other_objs.split(",");
 				for (String obj : otherobjs) {
-					wtn.addOtherObj(obj);
+					wtn.addOtherObj(obj.toUpperCase());
 				}
 			}
 		}
