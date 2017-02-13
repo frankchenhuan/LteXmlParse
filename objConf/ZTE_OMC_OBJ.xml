@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 此XML用于中兴厂家的配置文件的解析与入库-->
+<Objects>
+	<!-- 此XML用于AntennaFunction文件的解析与入库-->
+	<!-- 此对象用于LTE天线配置信息-->
+	<Object>
+		<ObjectType>AntennaFunction</ObjectType>
+		<tablename>LTE_CM_ANTENNAFUNCTION</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="20">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_ANTENNAFUNCTION">Dn-AntennaFunction</N>
+			<N type="number" tablecolumn="I_ANT_ID" regex="[^0-9]">Dn-AntennaFunction</N>
+            <N type="number" tablecolumn="VERTBEAMWIDTH">VertBeamwidth</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="number" tablecolumn="RETTILTVALUE">RetTiltValue</N>
+			<N type="string" tablecolumn="RETGROUPNAME" length="50">RetGroupName</N>
+			<N type="string" tablecolumn="RETFLAG" length="20">RetFlag</N>
+			<N type="string" tablecolumn="OPERATIONALSTATE" length="20">OperationalState</N>
+			<N type="number" tablecolumn="MINTILTVALUE">MinTiltValue</N>
+			<N type="number" tablecolumn="MINAZIMUTHVALUE">MinAzimuthValue</N>
+			<N type="number" tablecolumn="MECHANICALOFFSET">MechanicalOffset</N>
+			<N type="number" tablecolumn="MAXTILTVALUE">MaxTiltValue</N>
+			<N type="number" tablecolumn="MAXAZIMUTHVALUE">MaxAzimuthValue</N>
+			<N type="number" tablecolumn="LONGITUDE">Longitude</N>
+			<N type="number" tablecolumn="LATITUDE">Latitude</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="number" tablecolumn="HORIZBEAMWIDTH">HorizBeamwidth</N>
+			<N type="number" tablecolumn="HEIGHT">Height</N>
+			<N type="number" tablecolumn="BEARING">Bearing</N>
+			<N type="number" tablecolumn="BASEELEVATION">BaseElevation</N>
+			<N type="string" tablecolumn="ANTNUMBER" length="20">AntNumber</N>
+			<N type="string" tablecolumn="ANTEUTRANCELLLIST" length="500" regex="[{}]">AntEutranCellList</N>
+			<N type="string" tablecolumn="ADMINISTRATIVESTATE"  length="50">AdministrativeState</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于EnbFunction文件的解析与入库-->
+	<!-- 此对象用于LTE基站配置信息-->
+	<Object>
+		<ObjectType>EnbFunction</ObjectType>
+		<tablename>LTE_CM_ENBFUNCTION</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="40">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_ENBFUNCTION" length="15">Dn-EnbFunction</N>
+			<N type="string" tablecolumn="X2WHITELIST" length="200" regex="[{}]">X2WhiteList</N>
+			<N type="string" tablecolumn="X2IPADDRESSLIST" length="500" regex="[{}]">X2IpAddressList</N>
+			<N type="string" tablecolumn="X2HOBLACKLIST" length="200" regex="[{}]">X2HoBlackList</N>
+			<N type="string" tablecolumn="X2BLACKLIST" length="200" regex="[{}]">X2BlackList</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="string" tablecolumn="OPERATIONALSTATE" length="50">OperationalState</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="string" tablecolumn="ENBID" length="40">EnbId</N>
+			<N type="string" tablecolumn="ADMINISTRATIVESTATE" length="40">AdministrativeState</N>
+			<N type="string" tablecolumn="INTEGRITYPROTALGORITHM" length="50">IntegrityProtAlgorithm</N>
+			<N type="string" tablecolumn="CIPHERINGALGORITHM" length="50">CipheringAlgorithm</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于EpRpDynS1uEnb文件的解析与入库-->
+	<!-- 此对象用于用户面的S1-U接口信息-->
+	<Object>
+		<ObjectType>EpRpDynS1uEnb</ObjectType>
+		<tablename>LTE_CM_EPRPDYNS1UENB</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="40">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_ENBFUNCTION" length="15">Dn-EnbFunction</N>
+			<N type="string" tablecolumn="DN_EPRPDYNS1UENB" length="15">Dn-EpRpDynS1uEnb</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="string" tablecolumn="LOCIPADDRLIST" length="200">LocIpAddrList</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="string" tablecolumn="FARIPSUBNETWORKLIST" length="4000" regex="[{}]">FarIpSubnetworkList</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于EpRpStaS1MmeEnb文件的解析与入库-->
+	<!-- 此对象用于EPC和E-UTRAN之间的接口界面信息-->
+	
+	<Object>
+		<ObjectType>EpRpStaS1MmeEnb</ObjectType>
+		<tablename>LTE_CM_EPRPSTAS1MMEENB</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="40">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_ENBFUNCTION" length="15">Dn-EnbFunction</N>
+			<N type="string" tablecolumn="DN_EPRPSTAS1MMEENB" length="15">Dn-EpRpStaS1MmeEnb</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="string" tablecolumn="OPERATIONALSTATE" length="50">OperationalState</N>
+			<N type="string" tablecolumn="LOCIPADDRLIST" length="50">LocIpAddrList</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="string" tablecolumn="GLOBALUNIQUEMMEID" length="">GlobalUniqueMmeId</N>
+			<N type="string" tablecolumn="FARENDIPADDRLIST" length="50">FarEndIpAddrList</N>
+			<N type="string" tablecolumn="ADMINISTRATIVESTATE" length="50">AdministrativeState</N>
+		</FieldName>
+	</Object>
+	
+	<!-- 此XML用于EthernetPort文件的解析与入库-->
+	<!-- 此对象用于以太网端口信息-->
+	<Object>
+		<ObjectType>EthernetPort</ObjectType>
+		<tablename>LTE_CM_ETHERNETPORT</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="40">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_ETHERNETPORT" length="25">Dn-EthernetPort</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="string" tablecolumn="SIGNTRANSMEDIA" length="50">SignTransMedia</N>
+			<N type="string" tablecolumn="PORTRATE" length="50">PortRate</N>
+			<N type="string" tablecolumn="PORTLOCATION" length="50">PortLocation</N>
+			<N type="string" tablecolumn="OPERATIONALSTATE" length="50">OperationalState</N>
+			<N type="string" tablecolumn="MACADDRESS" length="50">MacAddress</N>
+			<N type="string" tablecolumn="IPADDRESSLIST" length="100">IpAddressList</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="string" tablecolumn="FARPORTLOCATION" length="50">FarPortLocation</N>
+			<N type="string" tablecolumn="ADMINISTRATIVESTATE" length="50">AdministrativeState</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于EutranCellTdd文件的解析与入库-->
+	<!-- 此对象用于LTE小区明细信息-->
+	<Object>
+		<ObjectType>EutranCellTdd</ObjectType>
+		<tablename>LTE_CM_EUTRANCELLTDD</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_ENBFUNCTION" length="15">Dn-EnbFunction</N>
+			<N type="string" tablecolumn="DN_EUTRANCELLTDD" length="15">Dn-EutranCellTdd</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="number" tablecolumn="TAC">Tac</N>
+			<N type="int"    tablecolumn="SPECIALSFPATTERNS">SpecialSfPatterns</N>
+			<N type="int"    tablecolumn="SFASSIGNMENT">SfAssignment</N>
+			<N type="string" tablecolumn="RELATEDRRULIST" length="2000">RelatedRruList</N>
+			<N type="string" tablecolumn="RELATEDANTENNALIST" length="2000">RelatedAntennaList</N>
+			<N type="string" tablecolumn="REFERENCESIGNALPOWER" length="50">ReferenceSignalPower</N>
+			<N type="string" tablecolumn="PLMNIDLIST" length="100">PlmnIdList</N>
+			<N type="string" tablecolumn="PCILIST" length="2500">PciList</N>
+			<N type="number" tablecolumn="PCI">Pci</N>
+			<N type="int"    tablecolumn="PB">Pb</N>
+			<N type="string" tablecolumn="OPERATIONALSTATE" length="50">OperationalState</N>
+			<N type="number" tablecolumn="MAXIMUMTRANSMISSIONPOWER" length="50">MaximumTransmissionPower</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="int"    tablecolumn="EARFCN">Earfcn</N>
+			<N type="string" tablecolumn="CELLSIZE" length="50">CellSize</N>
+			<N type="string" tablecolumn="MBMSSWITCH" length="20">CellResvInfo</N>
+			<N type="number" tablecolumn="CELLLOCALID">CellLocalId</N>
+			<N type="int"    tablecolumn="BANDWIDTH">BandWidth</N>
+			<N type="int"    tablecolumn="BANDINDICATOR">BandIndicator</N>
+			<N type="string" tablecolumn="ADMINISTRATIVESTATE" length="50">AdministrativeState</N>
+			<!-- EutranCellTdd文件的规范参数解析与入库--> 
+			<N type="string" tablecolumn="ENBAQ01" length="50">CellReservedForOperatorUse</N>
+			<N type="string" tablecolumn="ENBAQ02" length="50">CellBarred</N>
+			<N type="string" tablecolumn="ENBAQ03" length="50">AdditionalSpectrumEmission</N>
+			<N type="string" tablecolumn="ENBAQ04" length="50">TimeAlignmentTimerCommon</N>
+			<N type="string" tablecolumn="ENBAQ05" length="50">AntennaPortsCount</N>
+			<N type="string" tablecolumn="ENBAQ06" length="50">MaxHarqTx</N>
+			<N type="string" tablecolumn="ENBAQ07" length="50">PeriodicBsrTimer</N>
+			<N type="string" tablecolumn="ENBAQ08" length="50">RetxBsrTimer</N>
+			<N type="string" tablecolumn="ENBAQ09" length="50">ModificationPeriodCoeff</N>
+			<N type="string" tablecolumn="ENBAQ10" length="50">UlCyclicPrefixLength</N>
+			<N type="string" tablecolumn="ENBAQ11" length="50">DefaultPagingCycle</N>
+			<N type="string" tablecolumn="ENBAQ12" length="50">NB</N>
+			<N type="string" tablecolumn="ENBAR01" length="150">LongDrxCycle</N>
+			<N type="string" tablecolumn="ENBAR02" length="150">OnDurationTimer</N>
+			<N type="string" tablecolumn="ENBAR03" length="150">DrxInactivityTimer</N>
+			<N type="string" tablecolumn="ENBAR04" length="150">DrxRetransmissionTimer</N>
+			<N type="string" tablecolumn="ENBAR05" length="150">ShortDrxCycle</N>
+			<N type="string" tablecolumn="ENBAR06" length="150">DrxShortCycleTimer</N>
+			<N type="string" tablecolumn="ENBAR07" length="50">PhichDuration</N>
+			<N type="string" tablecolumn="ENBAR08" length="50">PhichResource</N>
+			<N type="string" tablecolumn="ENBAR09" length="50">DeltaPucchShift</N>
+			<N type="string" tablecolumn="ENBAR10" length="50">NRbCqi</N>
+			<N type="string" tablecolumn="ENBAR11" length="50">NCsAn</N>
+			<N type="string" tablecolumn="ENBAR12" length="50">N1PucchAn</N>
+			<N type="string" tablecolumn="ENBAR13" length="50">NSb</N>
+			<N type="string" tablecolumn="ENBAR14" length="50">HoppingMode</N>
+			<N type="string" tablecolumn="ENBAR15" length="50">PuschHoppingOffset</N>
+			<N type="string" tablecolumn="ENBAR16" length="50">Enable64Qam</N>
+			<N type="string" tablecolumn="ENBAR17" length="50">SrsBandwidthConfig</N>
+			<N type="string" tablecolumn="ENBAR18" length="50">SrsSubframeConfig</N>
+			<N type="string" tablecolumn="ENBAR19" length="50">AckNackSrsSimultaneousTransmission</N>
+			<N type="string" tablecolumn="ENBAR20" length="50">SrsMaxUpPts</N>
+			<N type="string" tablecolumn="ENBAR21" length="50">DsrTransMax</N>
+			<N type="string" tablecolumn="ENBAS01" length="50">N310</N>
+			<N type="string" tablecolumn="ENBAS02" length="50">N311</N>
+			<N type="string" tablecolumn="ENBAS03" length="50">T300</N>
+			<N type="string" tablecolumn="ENBAS04" length="50">T301</N>
+			<N type="string" tablecolumn="ENBAS05" length="50">T302</N>
+			<N type="string" tablecolumn="ENBAS06" length="50">T304Eutran</N>
+			<N type="string" tablecolumn="ENBAS07" length="50">T304Geran</N>
+			<N type="string" tablecolumn="ENBAS08" length="50">T310</N>
+			<N type="string" tablecolumn="ENBAS09" length="50">T311</N>
+			<N type="string" tablecolumn="ENBAS10" length="50">T320</N>
+			<N type="string" tablecolumn="ENBAT01" length="50">TFlagIdle</N>
+			<N type="string" tablecolumn="ENBAT02" length="50">TFlagConnect</N>
+			<N type="string" tablecolumn="ENBAT03" length="50">TEvaluationIdle</N>
+			<N type="string" tablecolumn="ENBAT04" length="50">THystNormalIdle</N>
+			<N type="string" tablecolumn="ENBAT05" length="50">NCellChangeMediumIdle</N>
+			<N type="string" tablecolumn="ENBAT06" length="50">NCellChangeHighIdle</N>
+			<N type="string" tablecolumn="ENBAT07" length="50">TEvaluationConnect</N>
+			<N type="string" tablecolumn="ENBAT08" length="50">THystNormalConnect</N>
+			<N type="string" tablecolumn="ENBAT09" length="50">NCellChangeMediumConnect</N>
+			<N type="string" tablecolumn="ENBAT10" length="50">NCellChangeHighConnect</N>
+			<N type="string" tablecolumn="ENBAT11" length="50">SMeasure</N>
+			<N type="string" tablecolumn="ENBAT12" length="50">FilterCoefficientRSRP</N>
+			<N type="string" tablecolumn="ENBAT13" length="50">FilterCoefficientRSRQ</N>
+			<N type="string" tablecolumn="ENBAT14" length="50">FilterCoefficientUTRAN</N>
+			<N type="string" tablecolumn="ENBAT15" length="50">FilterCoefficientGERAN</N>
+			<N type="string" tablecolumn="ENBAU01" length="50">IntraFreqReselection</N>
+			<N type="string" tablecolumn="ENBAU02" length="50">QHyst</N>
+			<N type="string" tablecolumn="ENBAU03" length="100">SfMedium</N>
+			<N type="string" tablecolumn="ENBAU04" length="100">SfHigh</N>
+			<N type="string" tablecolumn="ENBAU05" length="50">CellReselectionPriority</N>
+			<N type="string" tablecolumn="ENBAU06" length="100">CellReselectionPriorityReselection</N>
+			<N type="string" tablecolumn="ENBAU07" length="150">QRxLevMinReselection</N>
+			<N type="string" tablecolumn="ENBAU08" length="150">PMaxReselection</N>
+			<N type="string" tablecolumn="ENBAU09" length="50">SIntraSearch</N>
+			<N type="string" tablecolumn="ENBAU10" length="150">AllowedMeasBandwidth</N>
+			<N type="string" tablecolumn="ENBAU11" length="100">TReselectionEutra</N>
+			<N type="string" tablecolumn="ENBAU12" length="150">TReselectionEutraSf</N>
+			<N type="string" tablecolumn="ENBAU13" length="50">SIntraSearchPR9</N>
+			<N type="string" tablecolumn="ENBAU14" length="50">SIntraSearchQR9</N>
+			<N type="string" tablecolumn="ENBAU15" length="150">QQualMinR9Reselection</N>
+			<N type="string" tablecolumn="ENBAU16" length="50">SNonIntraSearch</N>
+			<N type="string" tablecolumn="ENBAU17" length="50">ThreshServingLow</N>
+			<N type="string" tablecolumn="ENBAU18" length="50">SNonIntraSearchPR9</N>
+			<N type="string" tablecolumn="ENBAU19" length="50">SNonIntraSearchQR9</N>
+			<N type="string" tablecolumn="ENBAU20" length="50">ThreshServingLowQR9</N>
+			<N type="string" tablecolumn="ENBAU21" length="100">ThreshXHigh</N>
+			<N type="string" tablecolumn="ENBAU22" length="100">ThreshXLow</N>
+			<N type="string" tablecolumn="ENBAU23" length="100">QOffsetFreq</N>
+			<N type="string" tablecolumn="ENBAU24" length="100">ThreshXHighQR9</N>
+			<N type="string" tablecolumn="ENBAU25" length="100">ThreshXLowQR9</N>
+			<N type="string" tablecolumn="ENBAU26" length="50">TReselectionUtra</N>
+			<N type="string" tablecolumn="ENBAU27" length="50">SfMediumUtra</N>
+			<N type="string" tablecolumn="ENBAU28" length="50">SfHighUtra</N>
+			<N type="string" tablecolumn="ENBAU29" length="400">CellReselectionPriorityUtra</N>
+			<N type="string" tablecolumn="ENBAU30" length="400">ThreshXHighUtra</N>
+			<N type="string" tablecolumn="ENBAU31" length="400">ThreshXLowUtra</N>
+			<N type="string" tablecolumn="ENBAU32" length="400">QRxLevMinUtra</N>
+			<N type="string" tablecolumn="ENBAU33" length="400">PMaxUtra</N>
+			<N type="string" tablecolumn="ENBAU34" length="50">NetworkControlOrder</N>
+			<N type="string" tablecolumn="ENBAU35" length="50">TReselectionGeran</N>
+			<N type="string" tablecolumn="ENBAU36" length="50">SfMediumGeran</N>
+			<N type="string" tablecolumn="ENBAU37" length="50">SfHighGeran</N>
+			<N type="string" tablecolumn="ENBAU38" length="500">CellReselectionPriorityGeran</N>
+			<N type="string" tablecolumn="ENBAU39" length="500">QRxLevMinGeran</N>
+			<N type="string" tablecolumn="ENBAU40" length="300">PMaxGeran</N>
+			<N type="string" tablecolumn="ENBAU41" length="500">ThreshXHighGeran</N>
+			<N type="string" tablecolumn="ENBAU42" length="500">ThreshXLowGeran</N>
+			<N type="string" tablecolumn="ENBAU43" length="50">QRxLevMin</N>
+			<N type="string" tablecolumn="ENBAU44" length="50">QRxLevMinOffset</N>
+			<N type="string" tablecolumn="ENBAU45" length="50">PMax</N>
+			<N type="string" tablecolumn="ENBAU46" length="50">QQualMinR9Selection</N>
+			<N type="string" tablecolumn="ENBAU47" length="50">QQualMinOffsetR9</N>
+			<N type="string" tablecolumn="ENBAV01" length="50">AcBarringForEmergency</N>
+			<N type="string" tablecolumn="ENBAV02" length="50">AcBarringForMoSignalling</N>
+			<N type="string" tablecolumn="ENBAV03" length="50">AcBarringForMoData</N>
+			<N type="string" tablecolumn="ENBAV04" length="50">SsacBarringForMmtelVoice</N>
+			<N type="string" tablecolumn="ENBAV05" length="50">SsacBarringForMmtelVideo</N>
+			<N type="string" tablecolumn="ENBAV06" length="50">RootSequenceIndex</N>
+			<N type="string" tablecolumn="ENBAV07" length="50">PrachConfigIndex</N>
+			<N type="string" tablecolumn="ENBAV08" length="50">HighSpeedFlag</N>
+			<N type="string" tablecolumn="ENBAV09" length="50">ZeroCorrelationZoneConfig</N>
+			<N type="string" tablecolumn="ENBAV10" length="50">PrachFreqOffset</N>
+			<N type="string" tablecolumn="ENBAV11" length="50">NumberOfRaPreambles</N>
+			<N type="string" tablecolumn="ENBAV12" length="50">SizeOfRaPreamblesGroupA</N>
+			<N type="string" tablecolumn="ENBAV13" length="50">MessageSizeGroupA</N>
+			<N type="string" tablecolumn="ENBAV14" length="50">MessagePowerOffsetGroupB</N>
+			<N type="string" tablecolumn="ENBAV15" length="50">PowerRampingStep</N>
+			<N type="string" tablecolumn="ENBAV16" length="50">PreambleInitialReceivedTargetPower</N>
+			<N type="string" tablecolumn="ENBAV17" length="50">PreambleTransMax</N>
+			<N type="string" tablecolumn="ENBAV18" length="50">RaResponseWindowSize</N>
+			<N type="string" tablecolumn="ENBAV19" length="50">MacContentionResolutionTimer</N>
+			<N type="string" tablecolumn="ENBAV20" length="50">MaxHarqMsg3Tx</N>
+			<N type="string" tablecolumn="ENBAW01" length="200">PeriodicPhrTimer</N>
+			<N type="string" tablecolumn="ENBAW02" length="200">ProhibitPhrTimer</N>
+			<N type="string" tablecolumn="ENBAW03" length="200">DlPathlossChange</N>
+			<N type="string" tablecolumn="ENBAW04" length="50">P0NominalPuschPersistent</N>
+			<N type="string" tablecolumn="ENBAW05" length="50">P0NominalPusch</N>
+			<N type="string" tablecolumn="ENBAW06" length="50">Alpha</N>
+			<N type="string" tablecolumn="ENBAW07" length="50">P0NominalPucch</N>
+			<N type="string" tablecolumn="ENBAW08" length="50">DeltaPreambleMsg3</N>
+			<N type="string" tablecolumn="ENBAW09" length="50">DeltaFPucchFormat1</N>
+			<N type="string" tablecolumn="ENBAW10" length="50">DeltaFPucchFormat1b</N>
+			<N type="string" tablecolumn="ENBAW11" length="50">DeltaFPucchFormat2</N>
+			<N type="string" tablecolumn="ENBAW12" length="50">DeltaFPucchFormat2a</N>
+			<N type="string" tablecolumn="ENBAW13" length="50">DeltaFPucchFormat2b</N>		
+            <N type="string" tablecolumn="i_head_compress" length="50">HeaderCompressionSwitch</N>	
+			<N type="string" tablecolumn="i_sps" length="50">SPSSwitchQCI1Ul</N>				
+		</FieldName>
+	</Object>
+	<!-- 此XML用于EutranRelationTdd文件的解析与入库-->
+	<!-- 此对象用于LTE邻区关系明细信息-->
+	<Object>
+		<ObjectType>EutranRelationTdd</ObjectType>
+		<tablename>LTE_CM_EUTRANRELATIONTDD</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_ENBFUNCTION" length="15">Dn-EnbFunction</N>
+			<N type="string" tablecolumn="DN_EUTRANCELLTDD" length="15">Dn-EutranCellTdd</N>
+			<N type="string" tablecolumn="DN_EUTRANRELATIONTDD" length="25">Dn-EutranRelationTdd</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="string" tablecolumn="TCI" length="50">Tci</N>
+			<N type="string" tablecolumn="PLMNIDLIST" length="50">PlmnIdList</N>
+			<N type="int"    tablecolumn="PCI">Pci</N>
+			<N type="string" tablecolumn="ISREMOVEALLOWED" length="50">IsRemoveAllowed</N>
+			<N type="string" tablecolumn="ISLBALLOWED" length="50">IsLbAllowed</N> 
+			<N type="string" tablecolumn="ISICICINFORMATIONSENDALLOWED" length="50">IsIcicInformationSendAllowed</N>
+			<N type="string" tablecolumn="ISHOALLOWED" length="50">IsHoAllowed</N>
+			<N type="string" tablecolumn="V_ID" length="500">Id</N>
+			<N type="int"    tablecolumn="EARFCN">Earfcn</N>
+			<N type="string" tablecolumn="CELLINDIVIDUALOFFSET" length="10">CellIndividualOffset</N>
+			<N type="string" tablecolumn="QOFFSETCELL" length="10">QOffsetCell</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于GsmRelation文件的解析与入库-->
+	<!-- 此对象用于gsm邻区关系-->
+	<Object>
+		<ObjectType>GsmRelation</ObjectType>
+		<tablename>LTE_CM_GSMRELATION</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_ENBFUNCTION" length="15">Dn-EnbFunction</N>
+			<N type="string" tablecolumn="DN_EUTRANCELLTDD" length="15">Dn-EutranCellTdd</N>
+			<N type="string" tablecolumn="DN_GSMRELATION" length="25">Dn-GsmRelation</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="int"    tablecolumn="RAC">Rac</N>
+			<N type="int"    tablecolumn="NCC">Ncc</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="int"    tablecolumn="BCCHFREQUENCY">BcchFrequency</N>
+			<N type="int"    tablecolumn="BCC">Bcc</N>
+			<N type="string" tablecolumn="ADJACENTCELLID" length="50">AdjacentCellId</N>
+		</FieldName>
+	</Object>
+	<!-- 此XML用于InventoryUnitPack文件的解析与入库-->
+	<!-- 此对象用于InventoryUnitPack明细信息-->
+	<!--
+	<Object>
+		<ObjectType>InventoryUnitPack</ObjectType>
+		<tablename>LTE_CM_INVENTORYUNITPACK</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_INVENTORYUNITRACK" length="15">Dn-InventoryUnitRack</N>
+			<N type="string" tablecolumn="DN_INVENTORYUNITSHELF" length="15">Dn-InventoryUnitShelf</N>
+			<N type="string" tablecolumn="DN_INVENTORYUNITPACK" length="15">Dn-InventoryUnitPack</N>
+		    <N type="string" tablecolumn="VERSIONNUMBER" length="50">VersionNumber</N>
+        	<N type="string" tablecolumn="VENDORUNITTYPENUMBER" length="50">VendorUnitTypeNumber</N>
+        	<N type="string" tablecolumn="VENDORUNITFAMILYTYPE" length="50">VendorUnitFamilyType</N>
+        	<N type="string" tablecolumn="VENDORNAME" length="50">VendorName</N>
+        	<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+       	 	<N type="string" tablecolumn="SLOTSOCCUPIED" length="50">SlotsOccupied</N>
+        	<N type="string" tablecolumn="SERIALNUMBER" length="50">SerialNumber</N>
+        	<N type="string" tablecolumn="PORTSINFORMATION" length="1000">PortsInformation</N>
+        	<N type="string" tablecolumn="PACKPOSITION" length="50">PackPosition</N>
+        	<N type="string" tablecolumn="MANUFACTURERDATA" length="200">ManufacturerData</N>
+        	<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="date" format="yyyy-MM-dd" tablecolumn="DATEOFMANUFACTURE">DateOfManufacture</N>
+       	 	<N type="date" format="yyyy-MM-dd" tablecolumn="DATEOFLASTSERVICE">DateOfLastService</N>
+      	</FieldName>
+	</Object>
+	-->
+	<!-- 此XML用于InventoryUnitRack文件的解析与入库-->
+	<!-- 此对象用于InventoryUnitRack明细信息-->
+	<!--
+	<Object>
+		<ObjectType>InventoryUnitRack</ObjectType>
+		<tablename>LTE_CM_INVENTORYUNITRACK</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_INVENTORYUNITRACK" length="15">Dn-InventoryUnitRack</N>
+	        <N type="string" tablecolumn="VERSIONNUMBER" length="200">VersionNumber</N>
+	        <N type="string" tablecolumn="VENDORUNITTYPENUMBER" length="50">VendorUnitTypeNumber</N>
+	        <N type="string" tablecolumn="VENDORUNITFAMILYTYPE" length="50">VendorUnitFamilyType</N>
+	        <N type="string" tablecolumn="VENDORNAME" length="50">VendorName</N>
+	        <N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+	        <N type="string" tablecolumn="SERIALNUMBER" length="50">SerialNumber</N>
+	        <N type="string" tablecolumn="RACKPOSITION" length="50">RackPosition</N>
+	        <N type="string" tablecolumn="MANUFACTURERDATA" length="50">ManufacturerData</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="date" format="yyyy-MM-dd" tablecolumn="DATEOFMANUFACTURE">DateOfManufacture</N>
+	        <N type="date" format="yyyy-MM-dd" tablecolumn="DATEOFLASTSERVICE">DateOfLastService</N>
+	    </FieldName>
+	</Object>
+	-->
+	<!-- 此XML用于InventoryUnitRru文件的解析与入库-->
+	<!-- 此对象用于射频拉远单元明细信息-->
+	<!--
+	<Object>
+		<ObjectType>InventoryUnitRru</ObjectType>
+		<tablename>LTE_CM_INVENTORYUNITRRU</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_INVENTORYUNITRRU" length="15">Dn-InventoryUnitRru</N>
+	        <N type="string" tablecolumn="VERSIONNUMBER" length="50">VersionNumber</N>
+	        <N type="string" tablecolumn="VENDORUNITTYPENUMBER" length="50">VendorUnitTypeNumber</N>
+	        <N type="string" tablecolumn="VENDORUNITFAMILYTYPE" length="50">VendorUnitFamilyType</N>
+	        <N type="string" tablecolumn="VENDORNAME" length="50">VendorName</N>
+	        <N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+	        <N type="string" tablecolumn="SERIALNUMBER" length="50">SerialNumber</N>
+	        <N type="string" tablecolumn="MANUFACTURERDATA" length="300">ManufacturerData</N>
+	        <N type="string" tablecolumn="V_ID" length="50">Id</N>
+	       	<N type="string" tablecolumn="FREQUENCYBAND" length="50">FrequencyBand</N>
+			<N type="date" format="yyyy-MM-dd" tablecolumn="DATEOFMANUFACTURE">DateOfManufacture</N>
+	        <N type="date" format="yyyy-MM-dd" tablecolumn="DATEOFLASTSERVICE">DateOfLastService</N>
+	    </FieldName>
+	</Object>
+	-->
+	<!-- 此XML用于InventoryUnitShelf文件的解析与入库-->
+	<!-- 此对象用于InventoryUnitShelf信息-->
+	<!--
+	<Object>
+		<ObjectType>InventoryUnitShelf</ObjectType>
+		<tablename>LTE_CM_INVENTORYUNITSHELF</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_INVENTORYUNITRACK" length="15">Dn-InventoryUnitRack</N>
+			<N type="string" tablecolumn="DN_INVENTORYUNITSHELF" length="15">Dn-InventoryUnitShelf</N>
+	        <N type="string" tablecolumn="VERSIONNUMBER" length="100">VersionNumber</N>
+	        <N type="string" tablecolumn="VENDORUNITTYPENUMBER" length="100">VendorUnitTypeNumber</N>
+	        <N type="string" tablecolumn="VENDORUNITFAMILYTYPE" length="50">VendorUnitFamilyType</N>
+	        <N type="string" tablecolumn="VENDORNAME" length="50">VendorName</N>
+	        <N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+	        <N type="string" tablecolumn="SLOTSINFORMATION" length="1000">SlotsInformation</N>
+	        <N type="string" tablecolumn="SHELFPOSITION" length="50">ShelfPosition</N>
+	        <N type="string" tablecolumn="SERIALNUMBER" length="50">SerialNumber</N>
+	        <N type="string" tablecolumn="MANUFACTURERDATA" length="500">ManufacturerData</N>
+	        <N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="date" format="yyyy-MM-dd" tablecolumn="DATEOFMANUFACTURE">DateOfManufacture</N>
+	        <N type="date" format="yyyy-MM-dd" tablecolumn="DATEOFLASTSERVICE">DateOfLastService</N>
+	    </FieldName>
+	</Object>
+	-->
+	<!-- 此XML用于ManagedElement文件的解析与入库-->
+	<!-- 此对象用于节点管理信息-->
+	
+	<Object>
+		<ObjectType>ManagedElement</ObjectType>
+		<tablename>LTE_CM_MANAGEDELEMENT</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="VERSION" length="50">Version</N>
+			<N type="string" tablecolumn="VENDORNAME" length="50">VendorName</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="string" tablecolumn="USERDEFINEDSTATE" length="50">UserDefinedState</N>
+			<N type="string" tablecolumn="SWVERSION" length="50">SwVersion</N>
+			<N type="string" tablecolumn="PATCHINFO" length="50">PatchInfo</N>
+			<N type="string" tablecolumn="OPERATIONALSTATE" length="50">OperationalState</N>
+			<N type="string" tablecolumn="MANAGEMENTIPADDRESS" length="50" regex="[{}]">ManagementIpAddress</N>
+			<N type="string" tablecolumn="MANAGEDBY" length="100">ManagedBy</N>
+			<N type="string" tablecolumn="LOCATIONNAME" length="100">LocationName</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="string" tablecolumn="HARDWAREPLATFORM" length="50">HardwarePlatform</N>
+			<N type="string" tablecolumn="DNPREFIX" length="50">DnPrefix</N>
+			<N type="string" tablecolumn="ADMINISTRATIVESTATE" length="50">AdministrativeState</N>
+		 </FieldName>
+	</Object>
+	
+	<!-- 此XML用于SctpAssoc文件的解析与入库-->
+	<!-- 此对象用于SCTP偶联信息-->
+	<!--
+	<Object>
+		<ObjectType>SctpAssoc</ObjectType>
+		<tablename>LTE_CM_SCTPASSOC</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_SCTPASSOC" length="15">Dn-SctpAssoc</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="string" tablecolumn="SCTPASSOCREMOTEADDR" length="50">SctpAssocRemoteAddr</N>
+			<N type="string" tablecolumn="SCTPASSOCLOCALADDR" length="50">SctpAssocLocalAddr</N>
+			<N type="string" tablecolumn="OPERATIONALSTATE" length="50">OperationalState</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="string" tablecolumn="ADMINISTRATIVESTATE" length="50">AdministrativeState</N>
+		</FieldName>
+	</Object>
+	-->
+	<!-- 此XML用于UtranRelationTdd文件的解析与入库-->
+	<!-- 此对象用于TD邻区关系-->
+	<Object>
+		<ObjectType>UtranRelationTdd</ObjectType>
+		<tablename>LTE_CM_UTRANRELATIONTDD</tablename>
+		<FieldName>
+			<N type="date" format="yyyyMMdd" tablecolumn="DTM_REPDATE">dtm_repdate</N>
+			<N type="string" tablecolumn="I_FACTORY_ID" length="10">i_factory_id</N>
+			<N type="string" tablecolumn="I_OMC_ID" length="10">i_omc_id</N>
+			<N type="string" tablecolumn="DATE_TIME" length="50">DateTime</N>
+			<N type="string" tablecolumn="DN_SUBNETWORK" length="15">Dn-SubNetwork</N>
+			<N type="string" tablecolumn="DN_MANAGEDELEMENT" length="15">Dn-ManagedElement</N>
+			<N type="string" tablecolumn="DN_ENBFUNCTION" length="15">Dn-EnbFunction</N>
+			<N type="string" tablecolumn="DN_EUTRANCELLTDD" length="15">Dn-EutranCellTdd</N>
+			<N type="string" tablecolumn="DN_UTRANRELATIONTDD" length="25">Dn-UtranRelationTdd</N>
+			<N type="string" tablecolumn="USERLABEL" length="100">UserLabel</N>
+			<N type="int"    tablecolumn="UARFCN">Uarfcn</N>
+			<N type="int"    tablecolumn="RAC">Rac</N>
+			<N type="int"    tablecolumn="LAC">Lac</N>
+			<N type="string" tablecolumn="V_ID" length="50">Id</N>
+			<N type="int"    tablecolumn="CELLPARAMETERID">CellParameterId</N>
+			<N type="string" tablecolumn="ADJACENTCELLID" length="50">AdjacentCellId</N>
+		</FieldName>
+	</Object>
+</Objects>
