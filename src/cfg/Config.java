@@ -17,6 +17,9 @@ public class Config {
 
 	private static Properties pro;
 	protected static final Log log = LogFactory.getLog(Config.class);
+	private static Boolean filter=null;
+	private static Boolean unZip=null;
+	private static Boolean delTemp=null;
 
 	public static void init(int type) {
 		InputStream in = null;
@@ -112,21 +115,44 @@ public class Config {
 	}
 
 	public static boolean isFilter() {
+		if(filter!=null)
+			return filter.booleanValue();
 		String s = pro.getProperty("filter");
-		if (s != null && s.equalsIgnoreCase("y")) {
-			return true;
+		if (s != null && s.equalsIgnoreCase("Y")) {
+			filter= true;
 		} else {
-			return false;
+			filter=false;
 		}
+		return filter.booleanValue();
 	}
 
 	public static boolean isDelTempFile() {
+		if(delTemp!=null)
+			return delTemp.booleanValue();
+		
 		String s = pro.getProperty("delTempFile");
-		if (s != null && s.equalsIgnoreCase("n")) {
-			return false;
+		if (s != null && s.equalsIgnoreCase("N")) {
+			delTemp= false;
 		} else {
-			return true;
+			delTemp= true;
 		}
+		return delTemp.booleanValue();
+	}
+	
+	
+	/**是否自动解压文件**/
+	public static boolean isAutoUnzip()
+	{
+		if(unZip!=null)
+			return unZip.booleanValue();
+		
+		String s = pro.getProperty("autoUnzip");
+		if (s != null && s.equalsIgnoreCase("N")) {
+			unZip= false;
+		} else {
+			unZip= true;
+		}
+		return unZip.booleanValue();
 	}
 
 	public static String getCharSet() {

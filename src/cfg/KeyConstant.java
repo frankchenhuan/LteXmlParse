@@ -25,4 +25,6 @@ public class KeyConstant {
 	public static final String KEY_OBJDN="OBJ-DN";
 	
 	public static final String KEY_OBJUSERLABEL="OBJ-USERLABEL";
+	
+	public static final String KEY_RMUID="rmUID";
 }

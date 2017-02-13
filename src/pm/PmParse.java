@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,35 +36,37 @@ import cfg.Tools;
 import cm.CmParseException;
 
 public class PmParse {
+	
+	protected String dataext="xml";
 
 	/** 全局的计数变量,记录共处理多少个对象 */
-	private int count = 0;
+	protected int count = 0;
 
 	/** 全局计数变量 记录共处理多少个文件 */
-	private int fileCount = 0;
+	protected int fileCount = 0;
 
 	/**
 	 * 保存配置文件中的对象
 	 */
-	private Map<String, ConfObj> objcfgs = new HashMap<String, ConfObj>();
+	protected Map<String, ConfObj> objcfgs = new HashMap<String, ConfObj>();
 
 	/**
 	 * 保存常量
 	 */
-	private Map<String, String> constant = new HashMap<String, String>();
+	protected Map<String, String> constant = new HashMap<String, String>();
 
 	/**
 	 * 数据连接对象
 	 */
-	private Connection con;
-	private Map<String, PreparedStatement> statementMap = new HashMap<String, PreparedStatement>();
+	protected Connection con;
+	protected Map<String, PreparedStatement> statementMap = new HashMap<String, PreparedStatement>();
 
 	protected final Log log = LogFactory.getLog(PmParse.class);
 
 	/**
 	 * 存放所有数据对象，以数据文件中dn作为key值
 	 */
-	private Map<String, PmDataObj> pmData = new HashMap<String, PmDataObj>();
+	protected Map<String, PmDataObj> pmData = new HashMap<String, PmDataObj>();
 
 	
 
@@ -139,6 +142,8 @@ public class PmParse {
 	public void setPrepared(PreparedStatement ps, Field field,
 			Map<String, String> values, PmDataObj pmd) throws SQLException {
 		String s = values.get(field.getName().toUpperCase());
+		//log.debug("指標個數"+values.size());
+		
 		String objname = pmd.getPmConfObj().getObjectType();
 		String filename = values.get(KeyConstant.KEY_FILENAME);
 		Tools.setPrepared(ps, field, s, pmd.getPmConfObj().getObjectType(),
@@ -158,21 +163,27 @@ public class PmParse {
 	public void parsePathAllXml(String filepath) throws XMLStreamException,
 			SQLException, IOException {
 		File f = new File(filepath);
+		
 		File fs[] = f.listFiles();
+		boolean isUnGzip = false;
+		List<File> currentFils = new ArrayList<File>();
 		for (int f_i = 0; f_i < fs.length; f_i++) {
-
+			File curFile = fs[f_i];
+			
 			// 如果不是文件或不是xml文件则直接跳过
-			if (!fs[f_i].isFile()
-					|| !fs[f_i].getName().toLowerCase().endsWith("xml")) {
+			if (!curFile.isFile()
+					|| (!curFile.getName().toLowerCase().endsWith(this.dataext)
+					&& !curFile.getName().toLowerCase().endsWith("gz")
+					&& !curFile.getName().toLowerCase().endsWith("zip"))) {
 				continue;
 			}
+			
 
 			// 过滤需要过滤的文件
 			boolean isContinue = false;
 			String[] filter_files = Config.getFilter_files();
-			String name = fs[f_i].getName();
+			String name = curFile.getName();
 			if (filter_files != null) {
-
 				for (int i = 0; i < filter_files.length; i++) {
 					isContinue = false;
 					if (name.indexOf(filter_files[i]) != -1) {
@@ -184,25 +195,59 @@ public class PmParse {
 			if (isContinue) {
 				continue;
 			}
-
-			log.debug(fs[f_i].getName());
-			if (Config.isFilter()) {
-				File newXml = Tools.formatXML(fs[f_i]);
-				parseXML(newXml);
-				// 删除临时文件
-				if (Config.isDelTempFile()) {
-					newXml.delete();
-				}
+			
+			
+			/**
+			 * 判断文件是压缩则解压文件
+			 */
+			currentFils.clear();
+			boolean autoUnzip=Config.isAutoUnzip();
+			if (autoUnzip
+					&& curFile.getName().toLowerCase().endsWith("gz")) {
+				curFile = Tools.unGZip(curFile);
+				isUnGzip = true;
+				currentFils.add(curFile);
+			} else if (autoUnzip
+					&& curFile.getName().toLowerCase().endsWith("zip")) {
+				currentFils = Tools.unZip(curFile);
+				isUnGzip = true;
 			} else {
-				parseXML(fs[f_i]);
+				isUnGzip = false;
+				currentFils.add(curFile);
 			}
 
-			fileCount++;
+			/**由于Zip文件包中可能存在多个文件，所以统一按多个文件处理*/
+			for (int i = 0; i < currentFils.size(); i++) {
+				curFile=currentFils.get(i);
+				log.debug("开始解析："+curFile.getName());
+				if (curFile.getName().toLowerCase().endsWith(this.dataext)) {
+					
+					if (Config.isFilter()) {
+						File newXml = Tools.formatXML(curFile);
+						this.parseXML(curFile);
+						// 删除临时文件
+						if (Config.isDelTempFile()) {
+							newXml.delete();
+						}
+					} else {
+						this.parseXML(curFile);
+					}
+					fileCount++;
+				} 
+				if (isUnGzip) {
+					log.debug("del "+curFile.getName());
+					curFile.delete();
+				}
+			}
 		}
+		/*if (pmData.size() > 0) {
+			insertObjData();
+			pmData.clear();
+		}*/
 	}
 
 	public void parseXML(File f) throws FileNotFoundException,
-			XMLStreamException, UnsupportedEncodingException, SQLException {
+			XMLStreamException, UnsupportedEncodingException, SQLException, IOException {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		XMLEventReader reader = factory
 				.createXMLEventReader(new InputStreamReader(
@@ -331,7 +376,7 @@ public class PmParse {
 
 	}
 
-	public void wirteLog() {
+	public void writeLog() {
 		Iterator it = objcfgs.values().iterator();
 		while (it.hasNext()) {
 			ConfObj o = (ConfObj) it.next();
