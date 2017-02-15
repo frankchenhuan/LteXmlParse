@@ -35,4 +35,6 @@ public class KeyConstant {
 	public static String FACTORY_ID="FACTORY_ID";
 	
 	public static String DTM_REPDATE="DTM_REPDATE";
+	
+	public static final String RMUID="rmUID";
 }

@@ -122,7 +122,8 @@ public class WpParse {
 	 * 解析并输出文件 参数1：需要解析的文件路径 参数2：是否删除临时文件
 	 * 
 	 **************************************************************************/
-	public void parseAndOut(String path, boolean delTempfile) throws XMLStreamException, IOException, SQLException {
+	public void parseAndOut(String path)
+			throws XMLStreamException, IOException, SQLException {
 		this.initDbTitles();
 		this.parsePathAllXml(path);
 		/** 合并并输出基站级数据 */
@@ -133,7 +134,7 @@ public class WpParse {
 		this.outputEutranCellTdd(path);
 		log.info("解析总数:" + num);
 		/** 删除临时文件 */
-		if (delTempfile) {
+		if (Config.isDelTempFile()) {
 			this.delTempfile();
 		}
 	}
@@ -144,28 +145,27 @@ public class WpParse {
 	 * @throws XMLStreamException
 	 * @throws SQLException
 	 * 
-	 * @throws CmParseException
-	 * @throws SQLException
-	 * @throws IOException
 	 */
 	private void parsePathAllXml(String filepath) throws XMLStreamException, IOException {
 		File f = new File(filepath);
 		File fs[] = f.listFiles();
+		boolean isUnGzip = false;
+		List<File> currentFils = new ArrayList<File>();
 		for (int f_i = 0; f_i < fs.length; f_i++) {
-
+			File curFile = fs[f_i];
 			// 如果不是文件或不是xml文件则直接跳过
-			if (!fs[f_i].isFile() || !fs[f_i].getName().toLowerCase().endsWith("xml")) {
+			if (!curFile.isFile()
+					|| (!curFile.getName().toLowerCase().endsWith("xml")
+					&& !curFile.getName().toLowerCase().endsWith("gz")
+					&& !curFile.getName().toLowerCase().endsWith("zip"))) {
 				continue;
 			}
 
-			/**
-			 * 
-			 */
 
 			// 过滤需要过滤的文件
 			boolean isContinue = false;
 			String[] filter_files = Config.getFilter_files();
-			String name = fs[f_i].getName();
+			String name = curFile.getName();
 			if (filter_files != null) {
 				for (int i = 0; i < filter_files.length; i++) {
 					isContinue = false;
@@ -178,65 +178,91 @@ public class WpParse {
 			if (isContinue) {
 				continue;
 			}
-
-			// 基站级别
-			for (int x = 0; x < this.enbFunction_db_types.size(); x++) {
-				String filename = fs[f_i].getName();
-				String regex = ".+[^a-zA-Z]" + this.enbFunction_db_types.get(x) + "[^a-zA-Z].+";
-				if (filename.matches(regex)) {
-					log.debug(filename);
-					if (Config.isFilter()) {
-						File newXml = Tools.formatXML(fs[f_i]);
-						this.parseEnbFunctionXML(newXml);
-						// 删除临时文件
-						if (Config.isDelTempFile()) {
-							newXml.delete();
-						}
-					} else {
-						this.parseEnbFunctionXML(fs[f_i]);
-					}
-					isContinue = true;
-					break;
-				}
-			}
-
-			if (isContinue) {
-				continue;
-			}
-
+			
 			/**
-			 * 小区级别
+			 * 判断文件是压缩则解压文件
 			 */
-			for (int x = 0; x < this.eutranCellTdd_db_types.size(); x++) {
-				String filename = fs[f_i].getName();
-				String regex = ".+[^a-zA-Z]" + this.eutranCellTdd_db_types.get(x) + "[^a-zA-Z].+";
-				if (filename.matches(regex)) {
-					log.debug(filename);
+			currentFils.clear();
+			boolean autoUnzip=Config.isAutoUnzip();
+			if (autoUnzip
+					&& curFile.getName().toLowerCase().endsWith("gz")) {
+				curFile = Tools.unGZip(curFile);
+				isUnGzip = true;
+				currentFils.add(curFile);
+			} else if (autoUnzip
+					&& curFile.getName().toLowerCase().endsWith("zip")) {
+				currentFils = Tools.unZip(curFile);
+				isUnGzip = true;
+			} else {
+				isUnGzip = false;
+				currentFils.add(curFile);
+			}
+			
+			/**由于Zip文件包中可能存在多个文件，所以统一按多个文件处理*/
+			for (int i = 0; i < currentFils.size(); i++) {
+				curFile=currentFils.get(i);
+				if (curFile.getName().toLowerCase().endsWith("xml")) {
+					log.debug("开始解析："+curFile.getName());
 					if (Config.isFilter()) {
-						File newXml = Tools.formatXML(fs[f_i]);
-						this.parseEutranCellTddXML(newXml);
+						File newXml = Tools.formatXML(curFile);
+						this.parseXml(curFile);
 						// 删除临时文件
 						if (Config.isDelTempFile()) {
 							newXml.delete();
 						}
 					} else {
-						this.parseEutranCellTddXML(fs[f_i]);
+						this.parseXml(curFile);
 					}
-					isContinue = true;
-					break;
+					fileCount++;
+				} 
+				if (isUnGzip) {
+					curFile.delete();
 				}
+				
 			}
-			if (isContinue) {
-				continue;
+
+		}
+	}
+	
+	/**解析文件
+	 * @throws IOException 
+	 * @throws XMLStreamException 
+	 * @throws NullPointerException */
+	private void parseXml(File curFile) throws IOException, NullPointerException, XMLStreamException
+	{
+		// 基站级别
+		for (int x = 0; x < this.enbFunction_db_types.size(); x++) {
+			String filename = curFile.getName().toUpperCase();
+			String objectType=this.enbFunction_db_types.get(x).toUpperCase();
+			String regex = ".+[^a-zA-Z]" + objectType + "[^a-zA-Z].+";
+			
+			if (filename.matches(regex)) {
+				log.debug(filename);
+				this.parseEnbFunctionXML(curFile,objectType);
+				return;
 			}
-			fileCount++;
+		}
+
+		/**
+		 * 小区级别
+		 */
+		for (int x = 0; x < this.eutranCellTdd_db_types.size(); x++) {
+			String filename = curFile.getName().toUpperCase();
+			String objectType=this.eutranCellTdd_db_types.get(x).toUpperCase();
+			String regex = ".+[^a-zA-Z]" + objectType + "[^a-zA-Z].+";
+			log.debug(objectType);
+			if (filename.matches(regex)) {
+				log.debug(filename);
+				this.parseEutranCellTddXML(curFile,objectType);
+				return;
+			}
 		}
 	}
 
 	/**
 	 * 解析EutranCellTdd级别文件，并输出csv临时文件
 	 */
-	private void parseEutranCellTddXML(File f) throws XMLStreamException, NullPointerException, IOException {
+	private void parseEutranCellTddXML(File f,String titleName) throws XMLStreamException, NullPointerException, IOException {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		XMLEventReader reader = factory
 				.createXMLEventReader(new InputStreamReader(new FileInputStream(f), Config.getCharSet()));
@@ -244,61 +270,44 @@ public class WpParse {
 		String dateTime = null;
 
 		List<String> lines = null;
-		String titlename = null;
 		CsvOutPrint cop = null;
 		List<String> titles = null;
-		String par_index = null;// 参数索引
-		String par_name = null;// 需要判断的参数名
 		boolean isContinue = false;// 是否跳过读取和保存数据
 		boolean isFirstCmEnd = false;// 表示是否首次cm节点结束
 		String userLabel = null;// cm标签中的属性userLabel，设为全局，因为需要将内容作为表头保存，需要在首个cm标签结束时使用
+		//titlename = reader.getElementText();
+		String filename = f.getParentFile().getAbsolutePath() + "/" + titleName + "_" + f.getName()
+				+ ".csv";
+		this.eutranCellTddFilenames.add(filename);
+		cop = new CsvWriter(filename);
+		titles = new ArrayList<String>();
+
+		
+		titles.add(KeyConstant.DN);
+		titles.add(KeyConstant.RMUID);
+		
 		while (reader.hasNext()) {
+			
 			XMLEvent xe = reader.nextEvent();
 			if (xe.isStartElement()) {
 				StartElement se = xe.asStartElement();
 				String name = se.getName().getLocalPart();
-
+				
 				if (name.equals("ObjectType")) {
-					titlename = reader.getElementText();
-					String filename = f.getParentFile().getAbsolutePath() + "/" + titlename + "_" + f.getName()
-							+ ".csv";
-					this.eutranCellTddFilenames.add(filename);
-					cop = new CsvWriter(filename);
-					titles = new ArrayList<String>();
-
-					titles.add(KeyConstant.DN);
+				
 				} else if (name.equals("FieldName")) {
 				} else if (name.equals("N")) {
 					String s = reader.getElementText();
 					// 将表头转换为大写，实现不区分大小写的参数名匹配
 					titles.add(s.trim().toUpperCase());
-
-					/** 需要特殊处理的参数* */
-					/** 判断诺西厂家中的一个开关参数，取得此开关参数的索引 */
-					/*
-					 * if (this.factroy_id.equals("01") &&
-					 * titlename.equals("REDRT")) { if
-					 * (s.equalsIgnoreCase("CSFALLBPRIO")) { par_index =
-					 * se.getAttributeByName(new QName("i")) .getValue();
-					 * par_name = "CSFALLBPRIO"; } } else
-					 */// 20151013取消处理，在merge中增加处理
-					/*
-					 * if (this.factroy_id.equals("02") &&
-					 * titlename.equals("DRXPARAGROUP")) { if
-					 * (s.equalsIgnoreCase("DrxParaGroupId")) { par_index =
-					 * se.getAttributeByName(new QName("i")) .getValue();
-					 * par_name = "DrxParaGroupId"; } }
-					 */// 20160408取消处理，不在对此参数进行特殊处理
 				} else if (name.equals("FieldValue")) {
-				} else if (name.equals("Cm")) {
+				} else if (name.equals("Object")) {
+					String rmuid=se.getAttributeByName(new QName("rmUID")).getValue();
 					String dn = se.getAttributeByName(new QName("Dn")).getValue();
 					userLabel = se.getAttributeByName(new QName("UserLabel")).getValue();
 					isContinue = false;// 跳过标识设置为不跳过
-
-					/**
-					 * 如果是第一个Cm节点，根据dn字符串确定是基站或者小区级别数据，并创建csv文件
-					 */
-					int index = dn.indexOf("EutranCellTdd");
+					
+					//log.debug(dn);
 					String celltdd = "";
 					String enb = "";
 					String me = "";
@@ -327,7 +336,9 @@ public class WpParse {
 					}
 
 					lines = new ArrayList<String>();
+					
 					lines.add(dn);
+					lines.add(rmuid);
 					String keyDn = this.getNewDn("EutranCellTdd", dn);
 					Map<String, String> key = this.eutranCellTdd_key.get(keyDn);
 					if (key == null) {
@@ -345,28 +356,6 @@ public class WpParse {
 
 				} else if (name.equals("V")) {
 					String s = reader.getElementText();
-					String i = se.getAttributeByName(new QName("i")).getValue();
-					if (!isContinue) {
-						// System.out.println(par_index + " " + i);
-						if (par_index != null && par_index.equals(i)) {
-
-							/**
-							 * 判断参数为CSFALLBPRIO，并且值不是1，将跳过标示设置为true，表示此行数据不再解析
-							 */
-							/*
-							 * if (par_name.equals("CSFALLBPRIO") &&
-							 * !s.equals("1")) { isContinue = true; } else
-							 */// 20151013取消处理，在merge中增加处理
-							/**
-							 * 判断参数为DrxParaGroupId，并且值不是3，将跳过标示设置为true，
-							 * 表示此行数据不再解析
-							 */
-							/*
-							 * if (par_name.equals("DrxParaGroupId") &&
-							 * !s.equals("3")) { isContinue = true; }
-							 */// 20160408取消处理，不在对此参数进行特殊处理
-						}
-					}
 					lines.add(s);
 
 				} else if (name.equals("DateTime")) {
@@ -376,7 +365,7 @@ public class WpParse {
 			} else if (xe.isEndElement()) {
 				EndElement se = xe.asEndElement();
 				String name = se.getName().getLocalPart();
-				if (name.equals("NrmFile")) {
+				if (name.equals("DataFile")) {
 
 				} else if (name.equals("ObjectType")) {
 				} else if (name.equals("FieldName")) {
@@ -390,10 +379,7 @@ public class WpParse {
 					}
 					cop.flush();
 					cop.close();
-					par_index = null;
-					par_name = null;
-
-				} else if (name.equals("Cm")) {
+				} else if (name.equals("Object")) {
 
 					/** 20160408增加，需要解析出userLabel中一些值作为参数 */
 					if (userLabel != null) {
@@ -431,18 +417,26 @@ public class WpParse {
 	/**
 	 * 解析文件，并输出csv临时文件
 	 */
-	private void parseEnbFunctionXML(File f) throws XMLStreamException, NullPointerException, IOException {
+	private void parseEnbFunctionXML(File f,String titleName) throws XMLStreamException, NullPointerException, IOException {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		XMLEventReader reader = factory
 				.createXMLEventReader(new InputStreamReader(new FileInputStream(f), Config.getCharSet()));
 		String dateTime = null;
 
 		List<String> lines = null;
-		String titlename = null;
 		CsvOutPrint cop = null;
 		List<String> titles = null;
 		boolean isFirstCmEnd = false;// 表示是否首次cm节点结束
 		String userLabel = null;// cm标签中的属性userLabel，设为全局，因为需要将内容作为表头保存，需要在首个cm标签结束时使用
+		//titlename = reader.getElementText();
+		String filename = f.getParentFile().getAbsolutePath() + "/" + titleName + "_" + f.getName()
+				+ ".csv";
+		this.enbFunctionFilenames.add(filename);
+		cop = new CsvWriter(filename);
+		titles = new ArrayList<String>();
+		titles.add(KeyConstant.DN);
+		titles.add(KeyConstant.RMUID);
+		
 		while (reader.hasNext()) {
 			XMLEvent xe = reader.nextEvent();
 			if (xe.isStartElement()) {
@@ -450,29 +444,16 @@ public class WpParse {
 				String name = se.getName().getLocalPart();
 				if (name.equals("ObjectType")) {
 					isFirstCmEnd = false;// 初始化为false
-					titlename = reader.getElementText();
-					String filename = f.getParentFile().getAbsolutePath() + "/" + titlename + "_" + f.getName()
-							+ ".csv";
-					this.enbFunctionFilenames.add(filename);
-					cop = new CsvWriter(filename);
-					titles = new ArrayList<String>();
-
-					titles.add(KeyConstant.DN);
-
 				} else if (name.equals("FieldName")) {
 				} else if (name.equals("N")) {
 					String s = reader.getElementText();
 					// 将表头转换为大写，实现不区分大小写的参数名匹配
 					titles.add(s.trim().toUpperCase());
 				} else if (name.equals("FieldValue")) {
-				} else if (name.equals("Cm")) {
+				} else if (name.equals("Object")) {
+					String rmuid=se.getAttributeByName(new QName("rmUID")).getValue();
 					String dn = se.getAttributeByName(new QName("Dn")).getValue();
 					userLabel = se.getAttributeByName(new QName("UserLabel")).getValue();
-
-					/**
-					 * 如果是第一个Cm节点，根据dn字符串确定是基站或者小区级别数据，并创建csv文件
-					 */
-					int index = dn.indexOf("EnbFunction");
 
 					String enb = "";
 					String me = "";
@@ -500,6 +481,7 @@ public class WpParse {
 
 					lines = new ArrayList<String>();
 					lines.add(dn);
+					lines.add(rmuid);
 					String keyDn = this.getNewDn("EnbFunction", dn);
 					Map<String, String> key = this.enbFunction_key.get(keyDn);
 					if (key == null) {
@@ -517,7 +499,7 @@ public class WpParse {
 				} else if (name.equals("V")) {
 					String s = reader.getElementText();
 					lines.add(s == null ? "" : s);
-				} else if (name.equals("DateTime")) {
+				} else if (name.equals("TimeStamp")) {
 					String s = reader.getElementText();
 					dateTime = (s != null ? s.replaceAll("T", " ").substring(0, 19) : "");
 				}
@@ -538,7 +520,7 @@ public class WpParse {
 					cop.flush();
 					cop.close();
 
-				} else if (name.equals("Cm")) {
+				} else if (name.equals("Object")) {
 					/** 20160408增加，需要解析出userLabel中一些值作为参数 */
 					if (userLabel != null) {
 						String userLabel_vs[] = userLabel.split(":");
@@ -562,7 +544,6 @@ public class WpParse {
 						cop.write(titles, true);
 						isFirstCmEnd = true;
 					}
-
 					cop.write(lines, true);
 				}
 			}
@@ -582,7 +563,7 @@ public class WpParse {
 		} else {
 			String s[] = Qci_types.split(",");
 			for (int i = 0; i < s.length; i++) {
-				if (s[i].equals(type)) {
+				if (s[i].equalsIgnoreCase(type)) {
 					return true;
 				}
 			}
@@ -600,11 +581,12 @@ public class WpParse {
 		if (types == null) {
 			return null;
 		} else {
+			
 			String s[] = types.split(",");
 			for (int i = 0; i < s.length; i++) {
 				String s1 = s[i].split("-")[0];
 				String s2[] = s[i].split("-")[1].split(":");
-				if (s1.equals(type)) {
+				if (s1.equalsIgnoreCase(type)) {
 					return s2;
 				}
 			}
@@ -648,8 +630,8 @@ public class WpParse {
 	private void merge(String filename, Map<String, Map> values, String key) throws IOException {
 		List<String> titles = null;
 		File file = new File(filename);
-		String typename = file.getName().substring(0, file.getName().indexOf("_"));
-		log.debug("read file:" + filename);
+		String typename = file.getName().substring(0, file.getName().indexOf("_")).toUpperCase();
+		log.debug("read file:" + filename+","+typename);
 		List<List<String>> data = Tools.readCSVFile(filename);
 
 		/** 存放需要区分QCI的参数 */
@@ -659,6 +641,7 @@ public class WpParse {
 		int qci_index = -1;// qci参数索引，如果是qci参数，则需要找到qci参数的索引
 
 		titles = data.get(0);// 取得表头
+		log.debug(data.size());
 		for (int x = 1; x < data.size(); x++) {
 			List<String> line = data.get(x);
 			/* 存放对象 */
@@ -1045,9 +1028,11 @@ public class WpParse {
 		Iterator<String> it = this.eutranCellTdd_key.keySet().iterator();
 		while (it.hasNext()) {
 			String obj_dn = it.next();
+			log.debug(obj_dn);
 			Map<String, String> obj_key = this.eutranCellTdd_key.get(obj_dn);
 			Map<String, Map> obj = this.eutranCellTdd.get(obj_dn);
 			if (obj == null) {
+				log.debug(null);
 				continue;
 			}
 			// System.out.println(obj_dn);
@@ -1066,7 +1051,7 @@ public class WpParse {
 
 			for (int i = 0; i < this.eutranCellTdd_db_targetName.size(); i++) {
 				WpTargetName wptn = this.eutranCellTdd_db_targetName.get(i);
-				String typename = wptn.getTypeName();
+				String typename = wptn.getTypeName().toUpperCase();
 				String targetname = wptn.getTargetName();
 				Map<String, String> vm = obj.get(typename);
 
@@ -1087,7 +1072,7 @@ public class WpParse {
 						}
 						// 如果取得的参数不为空，则退出循环
 						if (s != null && !s.trim().equals("")) {
-							log.debug("other obj:"+typename+"  "+targetname+" "+s);
+							log.debug("other obj:" + typename + "  " + targetname + " " + s);
 							break;
 						}
 					}

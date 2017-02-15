@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom2.Document;
@@ -39,7 +41,9 @@ public class ParseMain {
 
 	/** 全局计数变量 记录共处理多少个文件 */
 	static int fileCount = 0;
-
+	
+	
+	
 	/**
 	 * 保存配置文件中的对象
 	 */
@@ -118,7 +122,7 @@ public class ParseMain {
 		/**
 		 * 文件处理完成后输出日志
 		 */
-		wirteLog();
+		writeLog();
 
 	}
 
@@ -132,18 +136,23 @@ public class ParseMain {
 			IOException, SQLException {
 		File f = new File(filepath);
 		File fs[] = f.listFiles();
+		boolean isUnGzip = false;
+		List<File> currentFils = new ArrayList<File>();
 		for (int f_i = 0; f_i < fs.length; f_i++) {
-
+			File curFile = fs[f_i];
+			
 			// 如果不是文件或不是xml文件则直接跳过
-			if (!fs[f_i].isFile()
-					|| !fs[f_i].getName().toLowerCase().endsWith("xml")) {
+			if (!curFile.isFile()
+					|| (!curFile.getName().toLowerCase().endsWith("xml")
+					&& !curFile.getName().toLowerCase().endsWith("gz")
+					&& !curFile.getName().toLowerCase().endsWith("zip"))) {
 				continue;
 			}
-			
+			//log.debug(curFile.getName());
 			//过滤需要过滤的文件
 			boolean isContinue = false;
 			String[] filter_files = Config.getFilter_files();
-			String name=fs[f_i].getName();
+			String name=curFile.getName();
 			if (filter_files != null) {
 				for (int i = 0; i < filter_files.length; i++) {
 					isContinue = false;
@@ -157,19 +166,47 @@ public class ParseMain {
 				continue;
 			}
 			
-			if (Config.isFilter()) {
-				File newXml = Tools.formatXML(fs[f_i]);
-				parseXML(newXml);
-				
-				//删除临时文件
-				if (Config.isDelTempFile()) {
-					newXml.delete();
-				}
+			/**
+			 * 判断文件是压缩则解压文件
+			 */
+			currentFils.clear();
+			boolean autoUnzip=Config.isAutoUnzip();
+			if (autoUnzip
+					&& curFile.getName().toLowerCase().endsWith("gz")) {
+				curFile = Tools.unGZip(curFile);
+				isUnGzip = true;
+				currentFils.add(curFile);
+			} else if (autoUnzip
+					&& curFile.getName().toLowerCase().endsWith("zip")) {
+				currentFils = Tools.unZip(curFile);
+				isUnGzip = true;
 			} else {
-				parseXML(fs[f_i]);
+				isUnGzip = false;
+				currentFils.add(curFile);
 			}
-			log.debug(fs[f_i].getName());
-			fileCount++;
+			
+			/**由于Zip文件包中可能存在多个文件，所以统一按多个文件处理*/
+			for (int i = 0; i < currentFils.size(); i++) {
+				curFile=currentFils.get(i);
+				log.debug("开始解析："+curFile.getName());
+				if (curFile.getName().toLowerCase().endsWith("xml")) {
+					if (Config.isFilter()) {
+						File newXml = Tools.formatXML(curFile);
+						parseXML(curFile);
+						// 删除临时文件
+						if (Config.isDelTempFile()) {
+							newXml.delete();
+						}
+					} else {
+						parseXML(curFile);
+					}
+					fileCount++;
+				}
+				if (isUnGzip) {
+					curFile.delete();
+				}
+				
+			}
 		}
 		/**
 		 * 解析结束后将剩余部分执行入库
@@ -191,6 +228,8 @@ public class ParseMain {
 		Map<String, String> field_index_map = new HashMap<String, String>();
 		/** 存放value值的map */
 		Map<String, String> value_map = new HashMap<String, String>();
+		/**存放忽略key值大小写的map*/
+		Map<String,String> value_map1=new HashMap<String, String>(); 
 
 		doc = builder.build(f);
 
@@ -201,7 +240,7 @@ public class ParseMain {
 		 * 读取文件头时间常量，并存入常量map
 		 */
 		Element e_header = root.getChild("FileHeader");
-		String dateTime = e_header.getChild("DateTime").getValue();
+		String dateTime = e_header.getChild("TimeStamp").getValue();
 		dateTime = (dateTime != null ? dateTime.replaceAll("T", " ").substring(
 				0, 19) : "");
 		constant.put(KeyConstant.KEY_DATETIME, dateTime);
@@ -213,8 +252,17 @@ public class ParseMain {
 		for (int i = 0; i < e_objects.size(); i++) {
 			cfgxmlobj = null;
 			Element el_Object = e_objects.get(i);
-			cfgxmlobj = objcfgs.get(el_Object.getChildText("ObjectType")
-					.toUpperCase());
+			String objectTypes[]=f.getName().split("-");
+			for(i=0;i<=objectTypes.length;i++)
+			{
+				/*cfgxmlobj = objcfgs.get(el_Object.getChildText("ObjectType")
+						.toUpperCase());*/
+				cfgxmlobj = objcfgs.get(objectTypes[i]
+						.toUpperCase());
+				if(cfgxmlobj!=null)
+					break;
+			}
+			
 
 			/** 如果未找到对象，则证明不需要解析 */
 			if (cfgxmlobj == null) {
@@ -236,24 +284,34 @@ public class ParseMain {
 
 			// 用于提取对象的值
 			List<Element> e_fvs = el_Object.getChild("FieldValue").getChildren(
-					"Cm");
+					"Object");
 			// 下面的循环用于遍历对象的属性
 
 			for (int x = 0; x < e_fvs.size(); x++) {
 				value_map.clear();// 赋值前先清空
+				value_map1.clear();
 
 				// 将所有常量存入对象map
 				value_map.putAll(constant);
+				value_map1.putAll(constant);
 				Element e_cm = e_fvs.get(x);
 				String dn = e_cm.getAttributeValue("Dn");
 				String userLabel = e_cm.getAttributeValue("UserLabel");
+				String rmUID=e_cm.getAttributeValue("rmUID");
 				value_map.put(KeyConstant.KEY_OBJDN, dn);
 				value_map.put(KeyConstant.KEY_OBJUSERLABEL, userLabel);
+				value_map.put(KeyConstant.KEY_RMUID, rmUID);
+				
+				value_map1.put(KeyConstant.KEY_OBJDN, dn);
+				value_map1.put(KeyConstant.KEY_OBJUSERLABEL, userLabel);
+				value_map1.put(KeyConstant.KEY_RMUID, rmUID);
+				
 				String dns[] = dn.split(",");
 				for (int y = 0; y < dns.length; y++) {
 					String ds[] = dns[y].split("=");
 					if (ds.length > 1) {
 						value_map.put("DN-" + ds[0].toUpperCase(), ds[1]);
+						value_map1.put("DN-" + ds[0].toUpperCase(), ds[1]);
 					}
 				}
 				List<Element> e_fvalue = e_cm.getChildren("V");
@@ -261,13 +319,14 @@ public class ParseMain {
 					Element v = e_fvalue.get(y);
 
 					/** 将属性作为key 值作为value存放 */
-					value_map.put(field_index_map.get(v.getAttributeValue("i"))
+					value_map.put(field_index_map.get(v.getAttributeValue("i")), v.getValue());
+					value_map1.put(field_index_map.get(v.getAttributeValue("i"))
 							.toUpperCase(), v.getValue());
-
 				}
 				value_map.put(KeyConstant.KEY_FILENAME, filename);
+				value_map1.put(KeyConstant.KEY_FILENAME, filename);
 				/** 将保存好的数据对象放入数据缓冲区 */
-				addBatch(cfgxmlobj, value_map);
+				addBatch(cfgxmlobj, value_map,value_map1);
 
 				/** 入库条数+1 */
 				count++;
@@ -285,7 +344,7 @@ public class ParseMain {
 		}
 	}
 
-	public static void addBatch(ConfObj cfgxmlobj, Map<String, String> value_map)
+	public static void addBatch(ConfObj cfgxmlobj, Map<String, String> value_map,Map<String, String> value_map1 )
 			throws SQLException {
 		PreparedStatement pst = null;
 
@@ -296,7 +355,14 @@ public class ParseMain {
 			Field field = cfgxmlobj.getFields().get(z);
 			String s = null;
 			String filename = value_map.get(KeyConstant.KEY_FILENAME);
-			s = value_map.get(field.getName().toUpperCase());
+			if(field.isIgnoreCase())//忽略大小写
+			{
+				s = value_map1.get(field.getName().toUpperCase());
+			}else //不忽略大小写
+			{
+				s = value_map.get(field.getName());
+			}
+			
 			Tools.setPrepared(pst, field, s, cfgxmlobj.getObjectType(),
 					filename);
 		}
@@ -308,7 +374,7 @@ public class ParseMain {
 	/**
 	 * 记录日志
 	 */
-	public static void wirteLog() {
+	public static void writeLog() {
 		Iterator it = objcfgs.values().iterator();
 		while (it.hasNext()) {
 			ConfObj o = (ConfObj) it.next();

@@ -40,7 +40,7 @@ public class WpMain {
 			 * 参数1：路径
 			 * 参数2：是否删除临时文件
 			 * */
-			p.parseAndOut(filepath,Config.isDelTempFile());
+			p.parseAndOut(filepath);
 			//p.parseAndOut(filepath, true);
 			// p.parseXML(new File(
 			// "E:\\LTE数据\\HW\\WP\\HW_OMC06_20140112\\ENB-NRM-ALLV2.1.0-HOMEASCOMM-20140112-0344.xml"));

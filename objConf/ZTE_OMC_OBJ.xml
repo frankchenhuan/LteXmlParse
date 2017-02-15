@@ -162,7 +162,7 @@
 			<N type="string" tablecolumn="OPERATIONALSTATE" length="50">OperationalState</N>
 			<N type="number" tablecolumn="MAXIMUMTRANSMISSIONPOWER" length="50">MaximumTransmissionPower</N>
 			<N type="string" tablecolumn="V_ID" length="50">Id</N>
-			<N type="int"    tablecolumn="EARFCN">Earfcn</N>
+			<N type="int"    tablecolumn="EARFCN" IgnoreCase="N">Earfcn</N>
 			<N type="string" tablecolumn="CELLSIZE" length="50">CellSize</N>
 			<N type="string" tablecolumn="MBMSSWITCH" length="20">CellResvInfo</N>
 			<N type="number" tablecolumn="CELLLOCALID">CellLocalId</N>
