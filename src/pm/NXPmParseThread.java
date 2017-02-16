@@ -3,6 +3,7 @@ package pm;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -36,6 +37,17 @@ public class NXPmParseThread implements Runnable {
 	boolean delTempfile = false;
 
 	long startTime;// 线程开始执行时间
+	
+	/** 是否是解压缩后的文件*/
+	boolean isUnzip=false;
+
+	public boolean isUnzip() {
+		return isUnzip;
+	}
+
+	public void setUnzip(boolean isUnzip) {
+		this.isUnzip = isUnzip;
+	}
 
 	public boolean isDelTempfile() {
 		return delTempfile;
@@ -63,8 +75,8 @@ public class NXPmParseThread implements Runnable {
 
 	protected final Log log = LogFactory.getLog(this.getClass());
 
-	private void parseXML(File f) throws FileNotFoundException,
-			XMLStreamException, UnsupportedEncodingException {
+	protected void parseXML(File f) throws FileNotFoundException,
+			XMLStreamException, UnsupportedEncodingException, IOException {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		XMLEventReader reader = factory
 				.createXMLEventReader(new InputStreamReader(
@@ -208,22 +220,30 @@ public class NXPmParseThread implements Runnable {
 		// NXPmParseMain.addThreadNum();
 		// 过滤特殊字符,并生成临时文件
 		log.debug(this.file.getName());
+		File newfile=null;
 		if (this.isFilter()) {
 			try {
-				this.file = Tools.formatXML(this.file);
+				newfile = Tools.formatXML(this.file);
 			} catch (Exception e) {
 				log.error("创建临时文件错误", e);
 			}
+		}else
+		{
+			newfile=this.file;
 		}
 
 		try {
-			parseXML(this.file);
+			parseXML(newfile);
 		} catch (Exception e) {
 			log.error("解析文件出错" + this.file.getName(), e);
 		} finally {
 			// 删除临时文件
 			try {
 				if (this.isFilter() && this.isDelTempfile()) {
+					newfile.delete();
+				}
+				if(this.isUnzip)
+				{
 					this.file.delete();
 				}
 			} catch (Exception e) {

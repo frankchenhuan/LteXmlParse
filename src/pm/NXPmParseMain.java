@@ -218,14 +218,19 @@ public class NXPmParseMain {
 			InterruptedException {
 		File f = new File(filepath);
 		File fs[] = f.listFiles();
-		
+		boolean isUnGzip = false;
+		List<File> currentFils = new ArrayList<File>();
 		ThreadPoolExecutor execute = (ThreadPoolExecutor)Executors.newFixedThreadPool(threadnum);
 		
 		for (int f_i = 0; f_i < fs.length; f_i++) {
 
+			File curFile = fs[f_i];
+			
 			// 如果不是文件或不是xml文件则直接跳过
-			if (!fs[f_i].isFile()
-					|| !fs[f_i].getName().toLowerCase().endsWith("xml")) {
+			if (!curFile.isFile()
+					|| (!curFile.getName().toLowerCase().endsWith("csv")
+					&& !curFile.getName().toLowerCase().endsWith("gz")
+					&& !curFile.getName().toLowerCase().endsWith("zip"))) {
 				continue;
 			}
 
@@ -247,42 +252,41 @@ public class NXPmParseMain {
 				continue;
 			}
 
-			// Thread.sleep(5);
-			/* log.debug(fs[f_i].getName()); */
-			/** 查看线程状态并移除结束的线程 */
-			int num = 0;
-			/*for (int threadsize = threadList.size(); threadsize >= threadnum; threadsize = threadList
-					.size()) {
-				List<Thread> removeThread = new ArrayList<Thread>();
-				for (int x = 0; x < threadList.size(); x++) {
-					Thread t = threadList.get(x);
-					if (t.getState().equals(Thread.State.TERMINATED)) {
-						removeThread.add(t);
-					}
-				}
-				threadList.removeAll(removeThread);
-				Thread.sleep(20);
-				num++;
-				if (num % 100 == 0) {
-					log.debug("等待可用线程,当前线程数:" + threadList.size());
-				}
-			}*/
+			/**
+			 * 判断文件是压缩则解压文件
+			 */
+			currentFils.clear();
+			boolean autoUnzip=Config.isAutoUnzip();
+			if (autoUnzip
+					&& curFile.getName().toLowerCase().endsWith("gz")) {
+				curFile = Tools.unGZip(curFile);
+				isUnGzip = true;
+				currentFils.add(curFile);
+			} else if (autoUnzip
+					&& curFile.getName().toLowerCase().endsWith("zip")) {
+				currentFils = Tools.unZip(curFile);
+				isUnGzip = true;
+			} else {
+				isUnGzip = false;
+				currentFils.add(curFile);
+			}
+			
+			/**由于Zip文件包中可能存在多个文件，所以统一按多个文件处理*/
+			for (int i = 0; i < currentFils.size(); i++) {
+				curFile=currentFils.get(i);
+				log.debug("开始解析："+curFile.getName());
+				if (curFile.getName().toLowerCase().endsWith("csv")) {
+					//NXPmParseThread nxpt = new NXPmParseThread();
+					NXPmParseThread nxpt = new NXPmParseCSVThread();
+					nxpt.setFile(fs[f_i]);
 
-			NXPmParseThread nxpt = new NXPmParseThread();
-			nxpt.setFile(fs[f_i]);
-
-			nxpt.setFilter(Config.isFilter());
-			nxpt.setDelTempfile(Config.isDelTempFile());
-			execute.submit(nxpt);
-			/*Thread t = new Thread(nxpt,"");
-			threadList.add(t);
-			//t.setPriority(Thread.MAX_PRIORITY);//设置优先
-			t.start();*/
-			//log.debug("当前线程数:" + threadList.size());
-			//log.debug(fs[f_i].getName());
-			//log.debug("当前线程数:" + execute.getPoolSize());
-			// thread_current_num++;
-			fileCount++;
+					nxpt.setFilter(Config.isFilter());
+					nxpt.setDelTempfile(Config.isDelTempFile());
+					nxpt.setUnzip(isUnGzip);
+					execute.submit(nxpt);
+					fileCount++;
+				}
+			}
 		}
 
 		/** 如果线程数大于0,则表示有线程未结束,确定所有线程结束后再继续 */
