@@ -253,11 +253,11 @@ public class ParseMain {
 			cfgxmlobj = null;
 			Element el_Object = e_objects.get(i);
 			String objectTypes[]=f.getName().split("-");
-			for(i=0;i<=objectTypes.length;i++)
+			for(int j=0;j<objectTypes.length;j++)
 			{
 				/*cfgxmlobj = objcfgs.get(el_Object.getChildText("ObjectType")
 						.toUpperCase());*/
-				cfgxmlobj = objcfgs.get(objectTypes[i]
+				cfgxmlobj = objcfgs.get(objectTypes[j]
 						.toUpperCase());
 				if(cfgxmlobj!=null)
 					break;

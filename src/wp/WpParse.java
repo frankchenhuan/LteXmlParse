@@ -358,7 +358,7 @@ public class WpParse {
 					String s = reader.getElementText();
 					lines.add(s);
 
-				} else if (name.equals("DateTime")) {
+				} else if (name.equals("TimeStamp")) {
 					String s = reader.getElementText();
 					dateTime = (s != null ? s.replaceAll("T", " ").substring(0, 19) : "");
 				}
