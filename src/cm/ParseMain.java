@@ -249,9 +249,16 @@ public class ParseMain {
 		 * 循环Objects
 		 */
 		List<Element> e_objects = root.getChildren("Objects");
+		
 		for (int i = 0; i < e_objects.size(); i++) {
 			cfgxmlobj = null;
 			Element el_Object = e_objects.get(i);
+			/**由于京信厂家格式不标准，多一层objects标签，增加以下代码解决一下问题*/
+			if(el_Object.getChild("Objects")!=null)
+			{
+				el_Object=el_Object.getChild("Objects");
+			}
+			
 			String objectTypes[]=f.getName().split("-");
 			for(int j=0;j<objectTypes.length;j++)
 			{
