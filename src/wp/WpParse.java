@@ -247,11 +247,14 @@ public class WpParse {
 		String titlename = null;
 		CsvOutPrint cop = null;
 		List<String> titles = null;
-		String par_index = null;// 参数索引
-		String par_name = null;// 需要判断的参数名
+		/**保存参数的索引值*/
+		List<String> para_indexs=new ArrayList<String>();
+		/**保存参数索引参数值的对应关系*/
+		Map<String,String> para_values=new HashMap<String,String>();
 		boolean isContinue = false;// 是否跳过读取和保存数据
 		boolean isFirstCmEnd = false;// 表示是否首次cm节点结束
 		String userLabel = null;// cm标签中的属性userLabel，设为全局，因为需要将内容作为表头保存，需要在首个cm标签结束时使用
+		
 		while (reader.hasNext()) {
 			XMLEvent xe = reader.nextEvent();
 			if (xe.isStartElement()) {
@@ -268,29 +271,16 @@ public class WpParse {
 
 					titles.add(KeyConstant.DN);
 				} else if (name.equals("FieldName")) {
+					para_indexs.clear();//保存参数索引之前需要清空
 				} else if (name.equals("N")) {
 					String s = reader.getElementText();
 					// 将表头转换为大写，实现不区分大小写的参数名匹配
 					titles.add(s.trim().toUpperCase());
-
-					/** 需要特殊处理的参数* */
-					/** 判断诺西厂家中的一个开关参数，取得此开关参数的索引 */
-					/*
-					 * if (this.factroy_id.equals("01") &&
-					 * titlename.equals("REDRT")) { if
-					 * (s.equalsIgnoreCase("CSFALLBPRIO")) { par_index =
-					 * se.getAttributeByName(new QName("i")) .getValue();
-					 * par_name = "CSFALLBPRIO"; } } else
-					 */// 20151013取消处理，在merge中增加处理
-					/*
-					 * if (this.factroy_id.equals("02") &&
-					 * titlename.equals("DRXPARAGROUP")) { if
-					 * (s.equalsIgnoreCase("DrxParaGroupId")) { par_index =
-					 * se.getAttributeByName(new QName("i")) .getValue();
-					 * par_name = "DrxParaGroupId"; } }
-					 */// 20160408取消处理，不在对此参数进行特殊处理
+					String i = se.getAttributeByName(new QName("i")).getValue();
+					para_indexs.add(i);//按顺序保存参数索引
 				} else if (name.equals("FieldValue")) {
 				} else if (name.equals("Cm")) {
+					para_values.clear();//保存values之前，需要先清空数据集
 					String dn = se.getAttributeByName(new QName("Dn")).getValue();
 					userLabel = se.getAttributeByName(new QName("UserLabel")).getValue();
 					isContinue = false;// 跳过标识设置为不跳过
@@ -346,28 +336,8 @@ public class WpParse {
 				} else if (name.equals("V")) {
 					String s = reader.getElementText();
 					String i = se.getAttributeByName(new QName("i")).getValue();
-					if (!isContinue) {
-						// System.out.println(par_index + " " + i);
-						if (par_index != null && par_index.equals(i)) {
-
-							/**
-							 * 判断参数为CSFALLBPRIO，并且值不是1，将跳过标示设置为true，表示此行数据不再解析
-							 */
-							/*
-							 * if (par_name.equals("CSFALLBPRIO") &&
-							 * !s.equals("1")) { isContinue = true; } else
-							 */// 20151013取消处理，在merge中增加处理
-							/**
-							 * 判断参数为DrxParaGroupId，并且值不是3，将跳过标示设置为true，
-							 * 表示此行数据不再解析
-							 */
-							/*
-							 * if (par_name.equals("DrxParaGroupId") &&
-							 * !s.equals("3")) { isContinue = true; }
-							 */// 20160408取消处理，不在对此参数进行特殊处理
-						}
-					}
-					lines.add(s);
+					//lines.add(s);
+					para_values.put(i, s);
 
 				} else if (name.equals("DateTime")) {
 					String s = reader.getElementText();
@@ -390,11 +360,15 @@ public class WpParse {
 					}
 					cop.flush();
 					cop.close();
-					par_index = null;
-					par_name = null;
 
 				} else if (name.equals("Cm")) {
-
+					/**cm节点结束时，将数据写入行中**/
+					for(String i:para_indexs){
+						String v=para_values.get(i);
+						lines.add(v==null?"":v);
+					}
+					
+					
 					/** 20160408增加，需要解析出userLabel中一些值作为参数 */
 					if (userLabel != null) {
 						String userLabel_vs[] = userLabel.split(":");
@@ -441,6 +415,10 @@ public class WpParse {
 		String titlename = null;
 		CsvOutPrint cop = null;
 		List<String> titles = null;
+		/**保存参数的索引值*/
+		List<String> para_indexs=new ArrayList<String>();
+		/**保存参数索引参数值的对应关系*/
+		Map<String,String> para_values=new HashMap<String,String>();
 		boolean isFirstCmEnd = false;// 表示是否首次cm节点结束
 		String userLabel = null;// cm标签中的属性userLabel，设为全局，因为需要将内容作为表头保存，需要在首个cm标签结束时使用
 		while (reader.hasNext()) {
@@ -460,12 +438,16 @@ public class WpParse {
 					titles.add(KeyConstant.DN);
 
 				} else if (name.equals("FieldName")) {
+					para_indexs.clear();//保存参数索引之前需要清空
 				} else if (name.equals("N")) {
 					String s = reader.getElementText();
 					// 将表头转换为大写，实现不区分大小写的参数名匹配
 					titles.add(s.trim().toUpperCase());
+					String i = se.getAttributeByName(new QName("i")).getValue();
+					para_indexs.add(i);//按顺序保存参数索引
 				} else if (name.equals("FieldValue")) {
 				} else if (name.equals("Cm")) {
+					para_values.clear();//保存values之前，需要先清空数据集
 					String dn = se.getAttributeByName(new QName("Dn")).getValue();
 					userLabel = se.getAttributeByName(new QName("UserLabel")).getValue();
 
@@ -516,7 +498,9 @@ public class WpParse {
 
 				} else if (name.equals("V")) {
 					String s = reader.getElementText();
-					lines.add(s == null ? "" : s);
+					String i = se.getAttributeByName(new QName("i")).getValue();
+					//lines.add(s);
+					para_values.put(i, s);
 				} else if (name.equals("DateTime")) {
 					String s = reader.getElementText();
 					dateTime = (s != null ? s.replaceAll("T", " ").substring(0, 19) : "");
@@ -539,6 +523,12 @@ public class WpParse {
 					cop.close();
 
 				} else if (name.equals("Cm")) {
+					/**cm节点结束时，将数据写入行中**/
+					for(String i:para_indexs){
+						String v=para_values.get(i);
+						lines.add(v==null?"":v);
+					}
+					
 					/** 20160408增加，需要解析出userLabel中一些值作为参数 */
 					if (userLabel != null) {
 						String userLabel_vs[] = userLabel.split(":");
