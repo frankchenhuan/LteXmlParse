@@ -282,7 +282,10 @@ public class WpParse {
 		cop = new CsvWriter(filename);
 		titles = new ArrayList<String>();
 
-		
+		/**保存参数的索引值*/
+		List<String> para_indexs=new ArrayList<String>();
+		/**保存参数索引参数值的对应关系*/
+		Map<String,String> para_values=new HashMap<String,String>();
 		titles.add(KeyConstant.DN);
 		titles.add(KeyConstant.RMUID);
 		
@@ -296,10 +299,14 @@ public class WpParse {
 				if (name.equals("ObjectType")) {
 				
 				} else if (name.equals("FieldName")) {
+					para_indexs.clear();//保存参数索引之前需要清空
 				} else if (name.equals("N")) {
 					String s = reader.getElementText();
 					// 将表头转换为大写，实现不区分大小写的参数名匹配
 					titles.add(s.trim().toUpperCase());
+					
+					String i = se.getAttributeByName(new QName("i")).getValue();
+					para_indexs.add(i);//按顺序保存参数索引
 				} else if (name.equals("FieldValue")) {
 				} else if (name.equals("Object")) {
 					String rmuid=se.getAttributeByName(new QName("rmUID")).getValue();
@@ -356,7 +363,9 @@ public class WpParse {
 
 				} else if (name.equals("V")) {
 					String s = reader.getElementText();
-					lines.add(s);
+					String i = se.getAttributeByName(new QName("i")).getValue();
+					//lines.add(s);
+					para_values.put(i, s);
 
 				} else if (name.equals("TimeStamp")) {
 					String s = reader.getElementText();
@@ -381,6 +390,12 @@ public class WpParse {
 					cop.close();
 				} else if (name.equals("Object")) {
 
+					/**Object节点结束时，将数据写入行中**/
+					for(String i:para_indexs){
+						String v=para_values.get(i);
+						lines.add(v==null?"":v);
+					}
+					
 					/** 20160408增加，需要解析出userLabel中一些值作为参数 */
 					if (userLabel != null) {
 						String userLabel_vs[] = userLabel.split(":");
@@ -437,6 +452,11 @@ public class WpParse {
 		titles.add(KeyConstant.DN);
 		titles.add(KeyConstant.RMUID);
 		
+		/**保存参数的索引值*/
+		List<String> para_indexs=new ArrayList<String>();
+		/**保存参数索引参数值的对应关系*/
+		Map<String,String> para_values=new HashMap<String,String>();
+		
 		while (reader.hasNext()) {
 			XMLEvent xe = reader.nextEvent();
 			if (xe.isStartElement()) {
@@ -445,10 +465,13 @@ public class WpParse {
 				if (name.equals("ObjectType")) {
 					isFirstCmEnd = false;// 初始化为false
 				} else if (name.equals("FieldName")) {
+					para_indexs.clear();//保存参数索引之前需要清空
 				} else if (name.equals("N")) {
 					String s = reader.getElementText();
 					// 将表头转换为大写，实现不区分大小写的参数名匹配
 					titles.add(s.trim().toUpperCase());
+					String i = se.getAttributeByName(new QName("i")).getValue();
+					para_indexs.add(i);//按顺序保存参数索引
 				} else if (name.equals("FieldValue")) {
 				} else if (name.equals("Object")) {
 					String rmuid=se.getAttributeByName(new QName("rmUID")).getValue();
@@ -498,7 +521,9 @@ public class WpParse {
 
 				} else if (name.equals("V")) {
 					String s = reader.getElementText();
-					lines.add(s == null ? "" : s);
+					String i = se.getAttributeByName(new QName("i")).getValue();
+					//lines.add(s);
+					para_values.put(i, s);
 				} else if (name.equals("TimeStamp")) {
 					String s = reader.getElementText();
 					dateTime = (s != null ? s.replaceAll("T", " ").substring(0, 19) : "");
@@ -521,6 +546,12 @@ public class WpParse {
 					cop.close();
 
 				} else if (name.equals("Object")) {
+					/**Object节点结束时，将数据写入行中**/
+					for(String i:para_indexs){
+						String v=para_values.get(i);
+						lines.add(v==null?"":v);
+					}
+					
 					/** 20160408增加，需要解析出userLabel中一些值作为参数 */
 					if (userLabel != null) {
 						String userLabel_vs[] = userLabel.split(":");
