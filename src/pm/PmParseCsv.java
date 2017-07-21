@@ -16,59 +16,73 @@ import cfg.Config;
 import cfg.KeyConstant;
 
 public class PmParseCsv extends PmParse {
-	protected String objectType;//对象类型
-	protected String version; //版本
-	protected String timeStamp;//时间戳
-	protected String timeZone;//时区
-	protected String period;//周期
+	protected String objectType;// 对象类型
+	protected String version; // 版本
+	protected String timeStamp;// 时间戳
+	protected String timeZone;// 时区
+	protected String period;// 周期
 	protected String vendorName;// 厂家
 	protected String elementType;
-	
-	protected String begintime;//数据的开始时间
-	protected String endtime;//数据的结束时间
-	
+
+	protected String begintime;// 数据的开始时间
+	protected String endtime;// 数据的结束时间
+
 	protected SimpleDateFormat df1 = new SimpleDateFormat("yyyyMMddHHmmss");
 	protected SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
+
 	public PmParseCsv() {
-		this.dataext="csv";
+		this.dataext = "csv";
 	}
 
-	/** 根据文件名、文件头初始化文件的基本信息 
-	 * @throws ParseException */
-	private void initFileInfo(String filename, String filetitle){
-		
+	/**
+	 * 根据文件名、文件头初始化文件的基本信息
+	 * 
+	 * @throws ParseException
+	 */
+	private void initFileInfo(String filename, String filetitle) {
+
 		log.debug(filetitle);
-		String el2[]=filetitle.split("\\|");
-		this.timeStamp = el2[0].split("=")[1];
-		this.timeZone = el2[1].split("=")[1];
-		
-		this.vendorName = el2[3].split("=")[1];
-		this.elementType = el2[4].split("=")[1];
-		
-		String el1[]=filename.split("-");
-		
+		String el2[] = filetitle.split("\\|");
+		for (String s : el2) {
+			String s1 = s.split("=")[0];
+			String s2 = s.split("=")[1];
+			if (s1.equals("TimeStamp")) {
+				this.timeStamp = s2;
+			} else if (s1.equals("TimeZone"))
+
+			{
+				this.timeZone = s2;
+			} else if (s1.equals("Period")) {
+				this.period = s2;
+			} else if (s1.equals("VendorName")) {
+				this.vendorName = s2;
+			} else if (s1.equals("ElementType")) {
+				this.elementType = s2;
+			}
+		}
+
+		String el1[] = filename.split("-");
+
 		this.objectType = el1[2];
 		this.version = el1[4];
-		String datetime=el1[5];
-		if(filename.indexOf("-Ri")>0)
-		{
-			this.period = el1[7].substring(0,2);
-		}else
-		{
-			this.period = el1[6].substring(0,2);
+		String datetime = el1[5];
+		if (this.period == null) {
+			if (filename.indexOf("-Ri") > 0) {
+				this.period = el1[7].substring(0, 2);
+			} else {
+				this.period = el1[6].substring(0, 2);
+			}
 		}
-		
-		/**根据文件名中的 时间，计算开始时间和结束时间*/
+		/** 根据文件名中的 时间，计算开始时间和结束时间 */
 		try {
-			Date d1=df1.parse(datetime);
-			this.begintime=df2.format(d1);
-			long t=d1.getTime()+Integer.parseInt(this.period)*60*1000;
-			d1=new  Date(t);
-			this.endtime=df2.format(d1);
-			log.debug(begintime+"   "+endtime);
+			Date d1 = df1.parse(datetime);
+			this.begintime = df2.format(d1);
+			long t = d1.getTime() + Integer.parseInt(this.period) * 60 * 1000;
+			d1 = new Date(t);
+			this.endtime = df2.format(d1);
+			log.debug(begintime + "   " + endtime);
 		} catch (ParseException e) {
-			log.error("解析文件时，日期处理错误："+datetime,e);
+			log.error("解析文件时，日期处理错误：" + datetime, e);
 		}
 	}
 
@@ -117,7 +131,7 @@ public class PmParseCsv extends PmParse {
 
 			for (int i = 0; i < headers.length; i++) {
 				String header = headers[i];
-				String v=cr.get(header);
+				String v = cr.get(header);
 				pmdataobj.addValue(header.toUpperCase(), v);
 			}
 			if (pmData.size() >= Config.getCommitCount()) {
