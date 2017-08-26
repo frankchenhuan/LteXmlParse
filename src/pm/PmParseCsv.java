@@ -106,14 +106,16 @@ public class PmParseCsv extends PmParse {
 		String headers[] = cr.getHeaders();
 		PmDataObj pmdataobj = null;
 		while (cr.readRecord()) {
+			
 			String rmUID = cr.get("rmUID");
+			//log.debug(rmUID+"  "+begintime);
 			String startTime = cr.get("startTime");
 			String dn = cr.get("Dn");
 			String userLabel = cr.get("UserLabel");
-			pmdataobj = pmData.get(rmUID + "_" + startTime);
+			pmdataobj = pmData.get(rmUID + "_" + begintime);
 			if (pmdataobj == null) {
 				pmdataobj = new PmDataObj();
-				pmData.put(rmUID + "_" + startTime, pmdataobj);
+				pmData.put(rmUID + "_" + begintime, pmdataobj);
 			}
 			pmdataobj.setPmConfObj(confobj);
 			pmdataobj.addValue(KeyConstant.KEY_OBJDN, dn);
