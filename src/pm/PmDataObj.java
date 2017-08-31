@@ -14,8 +14,11 @@ public class PmDataObj {
 
 	private Map<String, String> values = new ConcurrentHashMap<String, String>();
 
-	public void addValue(String key, String value) {
-		values.put(key, value);
+	public synchronized void addValue(String key, String value) {
+		String v = values.get(key);
+		if (v == null || v.trim().equals("")) {
+			values.put(key, value);
+		}
 	}
 
 	public Map<String, Map> getSubTargetValues() {
@@ -26,8 +29,11 @@ public class PmDataObj {
 		return values;
 	}
 
-	public void addSubTargetValue(String key, Map values) {
-		subTargetValues.put(key, values);
+	public synchronized void addSubTargetValue(String key, Map vmap) {
+		Map v = subTargetValues.get(key);
+		if (v == null) {
+			subTargetValues.put(key, vmap);
+		}
 	}
 
 	public Map getSubTargetValues(String key) {
